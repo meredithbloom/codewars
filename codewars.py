@@ -19,9 +19,9 @@ def dirReduc(arr):
 
 
 a = ["NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST"]
-print(dirReduc(a))
+# print(dirReduc(a))
 u = ["NORTH", "WEST", "SOUTH", "EAST"]
-print(dirReduc(u))
+# print(dirReduc(u))
 
 
 
