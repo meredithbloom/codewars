@@ -1,3 +1,36 @@
+# Directions Reduction
+
+def dirReduc(arr):
+	#print(arr)
+	pairs = {
+		'NORTH': 'SOUTH',
+		'SOUTH': 'NORTH',
+		'EAST': 'WEST',
+		'WEST': 'EAST'
+	}
+	dirs = []
+	for direction in arr:
+		if dirs and pairs[direction] == dirs[-1]:
+			dirs.pop()
+		else:
+			dirs.append(direction)
+	return dirs
+			
+
+
+a = ["NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST"]
+print(dirReduc(a))
+u = ["NORTH", "WEST", "SOUTH", "EAST"]
+print(dirReduc(u))
+
+
+
+
+
+
+
+
+#########
 class User:
 	ranks = [-8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8]
 
@@ -163,14 +196,22 @@ class PaginationHelper:
 			return int(item_index/self.items_per_page)
   
 
-helper = PaginationHelper(['a','b','c','d','e','f'], 4)
-print(helper.page_count()) # 2 pages. 0 indexed, page 0, page 1
-print(helper.item_count()) # 
-print(helper.page_item_count(2)) # -1
-print(helper.page_item_count(1)) # 2
-print(helper.page_item_count(0)) # 4
+# helper = PaginationHelper(['a','b','c','d','e','f'], 4)
+# print(helper.page_count()) # 2 pages. 0 indexed, page 0, page 1
+# print(helper.item_count()) # 
+# print(helper.page_item_count(2)) # -1
+# print(helper.page_item_count(1)) # 2
+# print(helper.page_item_count(0)) # 4
 
-print(helper.page_index(20)) # -1
-print(helper.page_index(5))  # should == 1 (zero based index)
-print(helper.page_index(2))  # should == 0
-print(helper.page_index(-10))  # should == -1 because negative indexes are invalid
+# print(helper.page_index(20)) # -1
+# print(helper.page_index(5))  # should == 1 (zero based index)
+# print(helper.page_index(2))  # should == 0
+# print(helper.page_index(-10))  # should == -1 because negative indexes are invalid
+
+
+
+
+
+
+
+
