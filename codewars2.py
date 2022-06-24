@@ -1,6 +1,23 @@
+# Moving zeros to the end
+def move_zeros(array):
+    count = array.count(0)
+    while 0 in array:
+        array.remove(0)
+    for i in range(count):
+        array.append(0)
+    return(array)
+
+
+# move_zeros([1, 0, 1, 2, 0, 1, 3])
+
+
+
+
+
 # Did I finish my Sudoku?
 
-
+def done_or_not(board):
+    nums = [1,2,3,4,5,6,7,8,9]
 
 
 
@@ -70,7 +87,7 @@ def rot13(message):
     print(new_string)
     return new_string
 
-rot13('test')
-rot13('Test')
-rot13('Codewars')
-rot13('d')
+# rot13('test')
+# rot13('Test')
+# rot13('Codewars')
+# rot13('d')
