@@ -12,32 +12,24 @@ function findIt(array $seq) {
 
 
 
-
-
-
-
-
-
-
-
-
 // count number of duplicates - number of distinct case insensitive alphabetic characters and numeric digits that occur more than once in input string
 function duplicateCount($text) {
+    $counts = array_count_values(str_split(strtolower($text)));
     $dupes = 0;
-    $array = str_split($text);
-    print_r($array);
-    foreach ($array as $item) {
-        if (substr_count($text, $item) > 0) {
+    foreach ($counts as $key => $value) {
+        if ($value > 1) {
             $dupes++;
         }
     }
+    echo $dupes;
 }
 
 
-duplicateCount("");
-duplicateCount("abcde");
-duplicateCount("aabbcde");
-
+// duplicateCount("");
+// duplicateCount("abcde");
+// duplicateCount("aabbcde");
+// duplicateCount("aabBcde");
+// duplicateCount("Indivisibility");
 
 
 // square digits
