@@ -1,5 +1,30 @@
 
 <?php
+// get the middle character. return middle character of given word. if odd length, return single middle character. if even length, return middle two characters
+function getMiddle($text) {
+    $length = strlen($text);
+    if ($length == 1) {
+        return $text[0];
+    } elseif ($length % 2 == 0) {
+        return $text[($length/2)-1].$text[$length/2];
+    } elseif ($length % 2 != 0) {
+        return $text[($length-1)/2];
+    }
+}
+
+// echo getMiddle("test");
+// echo "\n";
+// echo getMiddle("testing");
+// echo "\n";
+// echo getMiddle("middle");
+// echo "\n";
+// echo getMiddle("A");
+// echo "\n";
+
+
+
+
+
 // find the odd int - given an array of numbers, find the one that appears an odd number of times
 function findIt(array $seq) {
     $counts = array_count_values($seq);
