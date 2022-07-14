@@ -1,5 +1,22 @@
 
 <?php
+//L1: set alarm
+function setAlarm(bool $employed, bool $vacation)
+{
+    if ($employed && !$vacation) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
 // get the middle character. return middle character of given word. if odd length, return single middle character. if even length, return middle two characters
 function getMiddle($text) {
     $length = strlen($text);
