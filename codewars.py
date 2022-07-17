@@ -2,20 +2,16 @@
 # all words must have first word capitalized, if final result is longer than 140 characters it must return false. if input or output is empty string, also return false
 def generate_hashtag(s):
     if len(s.strip()) == 0:
-        print(False)
+        return False
     else:
         split_words = s.strip().split()
-        new_words = []
-        first_word = '#' + split_words[0].capitalize()
-        new_words.append(first_word)
-        for i in range(1, len(split_words)):
-            new_word = split_words[i].capitalize()
-            new_words.append(new_word)
-        new_string = "".join(new_words)
+        new_string = '#'
+        for i in range(len(split_words)):
+            new_string += split_words[i].capitalize()
         if len(new_string) > 140:
             return False
         else:
-            print(new_string)
+            return(new_string)
 
        
 
