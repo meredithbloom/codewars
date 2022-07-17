@@ -1,3 +1,43 @@
+# The Hashtag Generator - 5 kyu
+# all words must have first word capitalized, if final result is longer than 140 characters it must return false. if input or output is empty string, also return false
+def generate_hashtag(s):
+    if len(s.strip()) == 0:
+        print(False)
+    else:
+        split_words = s.strip().split()
+        new_words = []
+        first_word = '#' + split_words[0].capitalize()
+        new_words.append(first_word)
+        for i in range(1, len(split_words)):
+            new_word = split_words[i].capitalize()
+            new_words.append(new_word)
+        new_string = "".join(new_words)
+        if len(new_string) > 140:
+            return False
+        else:
+            print(new_string)
+
+       
+
+generate_hashtag('')
+generate_hashtag('Do We have A Hashtag')
+generate_hashtag('Codewars')
+generate_hashtag('Codewars      ')
+generate_hashtag('Codewars Is Nice')
+generate_hashtag('c i n')
+generate_hashtag('codewars  is  nice')
+
+# Sum of Intervals - 4 kyu
+# write a function that accepts an array of intervals, the the reuns the sum of all the interval lengths. overlapping intervals should only be counted once
+
+
+
+
+
+
+
+
+
 # Where my anagrams at? 
 # write a function that will find all the anagrams of a word from a list. two inputs - a word and an array of words. return an array of all the anagrams in the list or an empty array if there are none
 from collections import Counter
@@ -13,8 +53,8 @@ def anagrams(word, words):
     print(anagrams)        
             
 
-anagrams('abba', ['aabb', 'abcd', 'bbaa', 'dada'])
-anagrams('racer', ['crazer', 'carer', 'racar', 'caers', 'racer'])
+# anagrams('abba', ['aabb', 'abcd', 'bbaa', 'dada'])
+# anagrams('racer', ['crazer', 'carer', 'racar', 'caers', 'racer'])
 
 # RGB to Hex conversion
 def rgb(r,g,b):
