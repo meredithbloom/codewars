@@ -1,3 +1,33 @@
+// multiple of 3 or 5
+
+function solution(number) {
+    let multiples = []
+    if (number < 0) {
+        return 0
+    } else {
+        for (let i = 1; i < number; i++) {
+            if ((i % 5 === 0) && (i % 3 === 0)) {
+                multiples.push(i)
+            } else if (i % 5 === 0) {
+                multiples.push(i)
+            } else if (i % 3 === 0) {
+                multiples.push(i)
+            }
+        }
+    }
+    console.log(multiples)
+    let sum = 0
+    for (let num of multiples) {
+        sum+=num
+    }
+    return sum
+}
+
+solution(10)
+solution(23)
+solution(15)
+
+
 const descendingOrder = (n) => {
     let string = n.toString();
     let split = string.split('')
@@ -589,5 +619,5 @@ function solution(list){
     console.log(numString)
 }
 
-solution([-6, -3, -2, -1, 0, 1, 3, 4, 5, 7, 8, 9, 10, 11, 14, 15, 17, 18, 19, 20])
-solution([-71,-69,-66,-65,-64,-63,-61,-59,-57,-54,-53,-52,-49,-46,-43,-40,-37,-36,-35,-32,-30,-28,-25])
+// solution([-6, -3, -2, -1, 0, 1, 3, 4, 5, 7, 8, 9, 10, 11, 14, 15, 17, 18, 19, 20])
+// solution([-71,-69,-66,-65,-64,-63,-61,-59,-57,-54,-53,-52,-49,-46,-43,-40,-37,-36,-35,-32,-30,-28,-25])

@@ -1,3 +1,5 @@
+# The first non-repeating character - 5 kyu
+
 # The Hashtag Generator - 5 kyu
 # all words must have first word capitalized, if final result is longer than 140 characters it must return false. if input or output is empty string, also return false
 def generate_hashtag(s):
