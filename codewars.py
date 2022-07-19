@@ -1,4 +1,31 @@
+# Valid Parentheses - 5kyu
+# write a function that takes a string of parentheses, and determines if the order of parentheses is valid. the function should return true if valid, false if not
+
+def valid_parentheses(string):
+    stack = []
+    if len(string) == 0:
+        return True
+    for element in string:
+        if element == '(':
+            stack.append(element)
+        elif element == ')' and len(stack) > 0:
+            stack.pop()
+        elif element == ')' and len(stack) == 0:
+            return False
+    if len(stack) > 0:
+        return False
+    else: 
+        return True
+    
+valid_parentheses("  (")
+valid_parentheses(")test")
+valid_parentheses("")
+valid_parentheses("hi())(")
+valid_parentheses("hi(hi)()")
+
+
 # The first non-repeating character - 5 kyu
+
 
 # The Hashtag Generator - 5 kyu
 # all words must have first word capitalized, if final result is longer than 140 characters it must return false. if input or output is empty string, also return false
@@ -17,13 +44,13 @@ def generate_hashtag(s):
 
        
 
-generate_hashtag('')
-generate_hashtag('Do We have A Hashtag')
-generate_hashtag('Codewars')
-generate_hashtag('Codewars      ')
-generate_hashtag('Codewars Is Nice')
-generate_hashtag('c i n')
-generate_hashtag('codewars  is  nice')
+# generate_hashtag('')
+# generate_hashtag('Do We have A Hashtag')
+# generate_hashtag('Codewars')
+# generate_hashtag('Codewars      ')
+# generate_hashtag('Codewars Is Nice')
+# generate_hashtag('c i n')
+# generate_hashtag('codewars  is  nice')
 
 # Sum of Intervals - 4 kyu
 # write a function that accepts an array of intervals, the the reuns the sum of all the interval lengths. overlapping intervals should only be counted once
