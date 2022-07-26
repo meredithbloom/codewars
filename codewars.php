@@ -1,5 +1,27 @@
 
 <?php
+// WeIrD StRiNg CaSe - 6kyu
+// write a function that takes a string, and return the same string with all even indexed characters in each word cased, and all odd indexed character in each word lower cased. so the zero-ith index is even
+
+function toWeirdCase($string) {
+    $split = explode(' ', $string);
+    $new_string = [];
+    foreach ($split as $word) {
+        $word = strtolower($word);
+        for ($index = 0; $index < strlen($word); $index+=2) {
+            $word[$index] = strtoupper($word[$index]);
+        }
+        // echo $word."\n";
+        array_push($new_string, $word);
+    }
+    $newString = implode(" ", $new_string);
+    return $newString;
+}
+
+toWeirdCase('Hello world foo bar baz');
+toWeirdCase('wEll i GuesS you passed');
+
+
 //L1: set alarm
 function setAlarm(bool $employed, bool $vacation)
 {
@@ -9,10 +31,6 @@ function setAlarm(bool $employed, bool $vacation)
         return false;
     }
 }
-
-
-
-
 
 
 
