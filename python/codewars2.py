@@ -3,7 +3,7 @@
 # f(n) * f(n+1) = prod
 # return [f(n), f(n+1), true/false]
 def productFib(prod):
-print(prod)
+		print(prod)
     fibs = [0,1,1]
     if prod > 2:
         for i in range(3, prod+3):
