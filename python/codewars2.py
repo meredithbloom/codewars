@@ -1,9 +1,24 @@
+# Scramblies - 5kyu
+# Complete the function scramble(str1, str2) that returns true if a portion of str1 characters can be rearranged to match str2, otherwise returns false.
+# Only lower case letters will be used (a-z). No punctuation or digits will be included. Performance needs to be considered.
+from collections import Counter
+
+def scramble(s1, s2):
+	string1 = Counter(s1)
+	string2 = Counter(s2)
+	if string2 <= string1:
+		return True
+	else:
+		return False
+	
+
+
 # Product of consecutive fibonacci numbers
 # return if two consecutive fib numbers can be multiplied to equal product, including the consecutive fib numbers
 # f(n) * f(n+1) = prod
 # return [f(n), f(n+1), true/false]
 def productFib(prod):
-print(prod)
+		print(prod)
     fibs = [0,1,1]
     if prod > 2:
         for i in range(3, prod+3):
