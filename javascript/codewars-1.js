@@ -239,18 +239,18 @@ function uniqueInOrder(iterable){
 //uniqueInOrder([])
 //console.log(uniqueInOrder())
 
-function dirReduc(arr) {
-    let reducedNS = 0
-    let reducedEW = 0
-    const newDir = []
-    if (arr.length > 0) {
-        for (let i = 0; i < arr.length; i++){
+// function dirReduc(arr) {
+//     let reducedNS = 0
+//     let reducedEW = 0
+//     const newDir = []
+//     if (arr.length > 0) {
+//         for (let i = 0; i < arr.length; i++){
             
-        }
-    } else {
-        return "empty directions"
-    }
-}
+//         }
+//     } else {
+//         return "empty directions"
+//     }
+// }
 
 
 // dirReduc(["NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST"])
