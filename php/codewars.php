@@ -10,12 +10,7 @@
 // arrayDiff([1,2,2,2,3],[2]) == [1,3]
 
 function arrayDiff($a, $b) {
-    $updated_array = array_diff($a, $b);
-    $new_array = [];
-    foreach ($updated_array as $elem) {
-        array_push($new_array, $elem);
-    }
-    print_r($new_array);
+    return array_values(array_diff($a,$b));
 }
 
 arrayDiff([1,2], [1]);
