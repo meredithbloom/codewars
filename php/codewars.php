@@ -1,5 +1,28 @@
 
 <?php
+// Array.diff - 6 kyu
+// Your goal in this kata is to implement a difference function, which subtracts one list from another and returns the result.
+
+//It should remove all values from list a, which are present in list b keeping their order.
+// arrayDiff([1,2],[1]) == [2]
+
+// If a value is present in b, all of its occurrences must be removed from the other:
+// arrayDiff([1,2,2,2,3],[2]) == [1,3]
+
+function arrayDiff($a, $b) {
+    $updated_array = array_diff($a, $b);
+    $new_array = [];
+    foreach ($updated_array as $elem) {
+        array_push($new_array, $elem);
+    }
+    print_r($new_array);
+}
+
+arrayDiff([1,2], [1]);
+arrayDiff([1,2,2,2,3], [2]);
+
+
+
 // WeIrD StRiNg CaSe - 6kyu
 // write a function that takes a string, and return the same string with all even indexed characters in each word cased, and all odd indexed character in each word lower cased. so the zero-ith index is even
 
@@ -18,8 +41,8 @@ function toWeirdCase($string) {
     return $newString;
 }
 
-toWeirdCase('Hello world foo bar baz');
-toWeirdCase('wEll i GuesS you passed');
+//toWeirdCase('Hello world foo bar baz');
+//toWeirdCase('wEll i GuesS you passed');
 
 
 //L1: set alarm
