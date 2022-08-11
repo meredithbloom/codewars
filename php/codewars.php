@@ -1,5 +1,24 @@
 
 <?php
+// Highest and Lowest - 7 kyu
+// In this little assignment you are given a string of space separated numbers, and have to return the highest and lowest number.
+
+function highAndLow($numbers) {
+    $strs = explode(" ", $numbers);
+    $nums = array_map('intval', $strs);
+    return strval(max($nums)).' '.strval(min($nums));
+}
+
+
+echo highAndLow("1 2 3 4 5");
+echo "\n";
+echo highAndLow("1 2 -3 4 5");
+echo "\n";
+echo highAndLow("1 9 3 4 -5");
+echo "\n";
+
+
+
 // Array.diff - 6 kyu
 // Your goal in this kata is to implement a difference function, which subtracts one list from another and returns the result.
 
