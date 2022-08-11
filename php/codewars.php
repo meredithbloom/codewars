@@ -1,5 +1,21 @@
 
 <?php
+// Bit Counting - 6 kyu
+// Write a function that takes an integer as input, and returns the number of bits that are equal to one in the binary representation of that number. You can guarantee that input is non-negative.
+// Example: The binary representation of 1234 is 10011010010, so the function should return 5 in this case
+
+function countBits($n) {
+    $converted = strval(decbin($n));
+    return substr_count($converted, "1");
+}
+
+// echo countBits(0);
+// countBits(4);
+// countBits(7);
+// countBits(9);
+// countBits(10);
+
+
 // Highest and Lowest - 7 kyu
 // In this little assignment you are given a string of space separated numbers, and have to return the highest and lowest number.
 
@@ -10,12 +26,12 @@ function highAndLow($numbers) {
 }
 
 
-echo highAndLow("1 2 3 4 5");
-echo "\n";
-echo highAndLow("1 2 -3 4 5");
-echo "\n";
-echo highAndLow("1 9 3 4 -5");
-echo "\n";
+// echo highAndLow("1 2 3 4 5");
+// echo "\n";
+// echo highAndLow("1 2 -3 4 5");
+// echo "\n";
+// echo highAndLow("1 9 3 4 -5");
+// echo "\n";
 
 
 
