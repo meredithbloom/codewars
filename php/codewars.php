@@ -1,5 +1,27 @@
 
 <?php
+// Replace with Alphabet Position - 6kyu
+// In this kata you are required to, given a string, replace every letter with its position in the alphabet.
+//If anything in the text isn't a letter, ignore it and don't return it.
+
+
+function alphabet_position(string $s) {
+    $abc = range('A', 'Z');
+    $exploded = explode(' ',strtoupper($s));
+    $new = [];
+    foreach ($exploded as $word) {
+        $split = str_split($word);
+        foreach ($split as $char) {
+            if (ctype_alpha($char)) {
+                array_push($new, array_search($char, $abc)+1);
+            } 
+        }
+    }
+    return implode(" ", $new);
+}
+//echo alphabet_position('The sunset sets at twelve o\' clock.');
+//alphabet_position('The narwhal bacons at midnight.');
+
 // Bit Counting - 6 kyu
 // Write a function that takes an integer as input, and returns the number of bits that are equal to one in the binary representation of that number. You can guarantee that input is non-negative.
 // Example: The binary representation of 1234 is 10011010010, so the function should return 5 in this case
