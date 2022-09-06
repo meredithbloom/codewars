@@ -30,8 +30,8 @@ function isValidWalk(walk) {
 let dir1 = ['n', 's', 'n', 's', 'n', 's', 'n', 's', 'n', 's'];
 let dir2 = ['w', 'e', 'w', 'e', 'w', 'e', 'w', 'e', 'w', 'e', 'w', 'e'];
 
-console.log(isValidWalk(dir1))
-console.log(isValidWalk(dir2))
+// console.log(isValidWalk(dir1))
+// console.log(isValidWalk(dir2))
 
 // Product of consecutive Fib numbers - 5 kyu
 /*
