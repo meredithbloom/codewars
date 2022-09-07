@@ -16,22 +16,14 @@ def choose_best_sum(t, k, ls):
     # all permutations of k length sub-lists of distances
     # sum of each permutation
     # highest sum <= t
-    print(ls)
     filtered = sorted(filter(lambda x: x <= t, ls))
-    print(filtered)
     if len(filtered) < k:
-        print(None)
         return None
     combs = list(itertools.combinations(filtered, k))
-    #print(combs)
     sums = [sum(x) for x in combs]
-    #sums = list(filter(lambda x: x<=t, [sum(x) for x in combs]))
     sums = list(filter(lambda x: x<=t, sums))
-    print(sums)
     if len(sums) == 0:
-        print(None)
         return None
-    print(max(sums))
     return max(sums)
     
 
