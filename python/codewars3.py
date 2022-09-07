@@ -1,4 +1,62 @@
+# Best Travel - 5 kyu
+
+# John and Mary want to travel between a few towns A, B, C ... Mary has on a sheet of paper a list of distances between these towns. ls = [50, 55, 57, 58, 60]. John is tired of driving and he says to Mary that he doesn't want to drive more than t = 174 miles and he will visit only 3 towns.
+
+# Which distances, hence which towns, they will choose so that the sum of the distances is the biggest possible to please Mary and John?
+
+# t = max sum of distances
+# k = number of towns to visit
+# ls = list of distances
+
+import itertools
+import re
+from collections import Counter
+
+def choose_best_sum(t, k, ls):
+    # all permutations of k length sub-lists of distances
+    # sum of each permutation
+    # highest sum <= t
+    print(ls)
+    filtered = sorted(filter(lambda x: x <= t, ls))
+    print(filtered)
+    if len(filtered) < k:
+        print(None)
+        return None
+    combs = list(itertools.combinations(filtered, k))
+    #print(combs)
+    sums = [sum(x) for x in combs]
+    #sums = list(filter(lambda x: x<=t, [sum(x) for x in combs]))
+    sums = list(filter(lambda x: x<=t, sums))
+    print(sums)
+    if len(sums) == 0:
+        print(None)
+        return None
+    print(max(sums))
+    return max(sums)
+    
+
+ls1 = [50, 55, 56, 57, 58]
+#choose_best_sum(163, 3, ls1) # -> 163
+
+
+ls2 = [50]
+#choose_best_sum(163, 3, ls2) # -> null
+
+ls3 = [91, 74, 73, 85, 73, 81, 87] 
+#choose_best_sum(230, 3, ls3)  # -> 228
+
+xs = [100, 76, 56, 44, 89, 73, 68, 56, 64, 123, 2333, 144, 50, 132, 123, 34, 89]
+
+#choose_best_sum(230, 4, xs) # -> 230
+#choose_best_sum(430, 5, xs) # -> 430
+#choose_best_sum(430, 8, xs) # -> None
+
+xt = [100, 76, 56, 44, 89, 73, 68, 56, 64,
+      123, 2333, 144, 50, 132, 123, 34, 89]
+choose_best_sum(880, 8, xt) # -> 876
+
 # Weight for weight - 5 kyu
+
 # My friend John and I are members of the "Fat to Fit Club (FFC)". John is worried because each month a list with the weights of members is published and each month he is the last on the list which means he is the heaviest.
 # I am the one who establishes the list so I told him: "Don't worry any more, I will modify the order of the list". It was decided to attribute a "weight" to numbers. The weight of a number will be from now on the sum of its digits.
 
@@ -25,7 +83,7 @@ list2 = "103 123 4444 99 2000"
 list3 = "2000 10003 1234000 44444444 9999 11 11 22 123"
 list4 = ""
 
-order_weight(list1)
+#order_weight(list1)
 
 # Most frequently used words in a text - 4kyu
 '''
@@ -44,9 +102,7 @@ If a text contains fewer than three unique words, then either the top-2 or top-1
 string1 = "In a village of La Mancha, the name of which I have no desire to call to mind, there lived not long since one of those gentlemen that keep a lance in the lance-rack, an old buckler, a lean hack, and a greyhound for coursing. An olla of rather more beef than mutton, a salad on most nights, scraps on Saturdays, lentils on Fridays, and a pigeon or so extra on Sundays, made away with three-quarters of his income."
 
 
-import itertools
-import re 
-from collections import Counter
+
 
 
 valid = (r'[a-zA-Z\']')
