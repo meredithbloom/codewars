@@ -1,3 +1,59 @@
+// Objectify a URL Query String
+// In this kata, we want to convert a URL query string into a nested object. The query string will contain parameters that may or may not have embedded dots ('.'), and these dots will be used to break up the properties into the nested object.
+
+//You will receive a string input that looks something like this:
+str1 = 'user.name.firstname=Bob&user.name.lastname=Smith&user.favoritecolor=Light%20Blue'
+
+// Your method should return an object hash-map that looks like this:
+/*
+ {
+  'user': {
+    'name': {
+      'firstname': 'Bob',
+      'lastname': 'Smith'
+    },
+    'favoritecolor': 'Light Blue'
+  }
+}
+*/
+function convertQueryToMap(query) {
+	//let params = new URLSearchParams(query)
+	//console.log(params)
+	const final = {}
+	const keyValuePairs = query
+		// splits into separate traits
+		.split('&')
+		// splits each trait so nested keys are separate from final val
+		.map(kvp => kvp.split('='))
+		//.filter(([key]) => Boolean(key))
+	//console.log(keyValuePairs)
+	// loops through all key value pairs
+	for (const kvp of keyValuePairs) {
+		// array destructuring, separates path from final val
+		const [key, value] = kvp
+		// splits path so we can convert to nested objects
+		const path = key.split('.')
+		let acc = final 
+		// deconstructing further
+		for (const [i, prop] of path.entries()) {
+			//console.log([i, prop])
+			if (i === path.length - 1) {
+				acc[prop] = decodeURIComponent(value)
+				continue
+			}
+			if (!acc[prop]) {
+				acc[prop] = {}
+			}
+			acc = acc[prop]
+		}
+	}
+	console.log(final)
+	return final
+}
+
+convertQueryToMap(str1)
+
+
 // Product of consecutive Fib numbers - 5 kyu
 /*
 The Fibonacci numbers are the numbers in the following integer sequence (Fn):
@@ -67,19 +123,19 @@ function productFib(prod) {
 	}
 }
 
-console.log(productFib(1))
-console.log(productFib(2))
-console.log(productFib(3))
-console.log(productFib(4))
-console.log(productFib(10))
-console.log(productFib(25))
-console.log(productFib(100))
-console.log(productFib(135))
-console.log(productFib(4895))
-console.log(productFib(5895))
-console.log(productFib(74049690))
-console.log(productFib(84049690))
-console.log(productFib(193864606))
+// console.log(productFib(1))
+// console.log(productFib(2))
+// console.log(productFib(3))
+// console.log(productFib(4))
+// console.log(productFib(10))
+// console.log(productFib(25))
+// console.log(productFib(100))
+// console.log(productFib(135))
+// console.log(productFib(4895))
+// console.log(productFib(5895))
+// console.log(productFib(74049690))
+// console.log(productFib(84049690))
+// console.log(productFib(193864606))
 
 // Take a Ten Minutes Walk - 6 kyu
 /*
