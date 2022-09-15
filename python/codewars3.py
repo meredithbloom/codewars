@@ -11,20 +11,39 @@ solution1 = [-10, -9, -8, -6, -3, -2, -1, 0, 1, 3, 4, 5, 7, 8, 9, 10, 11, 14, 15
 
 def solution(args):
     final = ''
-    for group in more.consecutive_groups(args):
-        g = list(group)
-        #print(g)
-        if len(g) > 2:
-            reduced = str(g[0])+'-'+str(g[-1])
-            print(reduced)
-            final += reduced+', '
-            print(final)
+    groups = []
+    for key, group in groupby(enumerate(args), key=lambda x: x[0]-x[1]):
+        gb = list(group)
+        new = [x[1] for x in gb]
+        groups.append(new)
+    #print(groups)
+    for group in groups:
+        if len(group) > 2:
+            string = str(group[0])+'-'+str(group[-1])+','
+            final+=string
+        elif len(group) == 2:
+            string = str(group[0])+','+str(group[1])+','
+            final+=string
         else:
-            reduced = str(g[0])
-            print(reduced)
-            final += reduced+', '
-    print(final.strip(', '))
-    return final.strip(', ')
+            final+=str(group[0])+','
+    print(final.strip(','))
+    return final.strip(',')
+            
+
+    # for group in more.consecutive_groups(args):
+    #     g = list(group)
+    #     #print(g)
+    #     if len(g) > 2:
+    #         reduced = str(g[0])+'-'+str(g[-1])
+    #         print(reduced)
+    #         final += reduced+', '
+    #         print(final)
+    #     else:
+    #         reduced = str(g[0])
+    #         print(reduced)
+    #         final += reduced+', '
+    # print(final.strip(', '))
+    # return final.strip(', ')
 
 
 solution(solution1)
