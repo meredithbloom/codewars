@@ -1,5 +1,39 @@
 
 <?php
+// Duplicate Encoder
+// The goal of this exercise is to convert a string to a new string where each character in the new string is "(" if that character appears only once in the original string, or ")" if that character appears more than once in the original string. Ignore capitalization when determining if a character is a duplicate.
+
+$ex1 = "din";
+$ex2 = "recede";
+$ex3 = "Success";
+
+function duplicate_encode($word) {
+    $word = strtolower($word);
+    $freqs = count_chars($word, 1);
+    $newarr = [];
+    //print_r($freqs);
+    foreach($freqs as $i => $count) {
+        $newarr[chr($i)] = $count;
+    }
+    //print_r($newarr);
+    $newword = '';
+    foreach(str_split($word) as $letter) {
+        if ($newarr[$letter] == 1) {
+            $letter = "(";
+            $newword.=$letter;
+        } else {
+            $letter = ")";
+            $newword .= $letter;
+        }
+    }
+    echo $newword."\n";
+    return $newword;
+
+    
+}
+
+duplicate_encode($ex1);
+
 // Create Phone Number - 6 kyu
 // Write a function that accepts an array of 10 integers (between 0 and 9), that returns a string of those numbers in the form of a phone number.
 // createPhoneNumber([1,2,3,4,5,6,7,8,9,0]); 
