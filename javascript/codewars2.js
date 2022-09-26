@@ -1,5 +1,5 @@
 // Pagination Helper - 5 kyu
-// TODO: complete this object/class
+// TODO: complete this ogtibject/class
 
 // The constructor takes in an array of items and a integer indicating how many
 // items fit within a single page
@@ -66,9 +66,9 @@ class PaginationHelper {
 		}
 		// checking every item between first and last
 		else if (itemIndex > -1) {
-			for (let i = 0; i < this.pageCount()-1; i++) {
+			for (let i = this.pageCount()-1; i >= 0; i--) {
 			// we check for first page that is greater than itemIndex - page AFTER where item would be indexed
-				if (itemIndex > this.itemsPerPage * i) {
+				if (itemIndex > (this.itemsPerPage * i)) {
 					console.log(`item with index ${itemIndex} is on page ${i}`)
 					console.log(i)
 					return i
