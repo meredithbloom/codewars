@@ -1,5 +1,5 @@
 // Pagination Helper - 5 kyu
-// TODO: complete this ogtibject/class
+// TODO: complete this object/class
 
 // The constructor takes in an array of items and a integer indicating how many
 // items fit within a single page
