@@ -192,7 +192,6 @@ valid_parentheses("hi())(")
 valid_parentheses("hi(hi)()")
 
 
-# The first non-repeating character - 5 kyu
 
 
 # The Hashtag Generator - 5 kyu
