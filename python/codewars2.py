@@ -5,9 +5,22 @@
 # contains an uppercase letter
 # contains a digit
 # only contains alphanumeric characters (note that '_' is not alphanumeric)
-import re
+from re import search 
 
-regex = r'[a-z]+[A-Z]+\d+'
+regex = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*\d)[^\W_]{6,}$'
+
+# start of word - ^
+# contains at least one lowercase letter - (?=.*?[a-z])
+# contains at least one uppercase letter - (?=.*?[A-Z])
+# contains at least one number - (?=.*?[0-9]) - or (?=.*\d)
+# only alphanumeric - [A-Za-z\d] -or  [^\W_]
+# at least 6 characters long - {6,}
+# end of word - $
+
+
+search(regex, 'fjd3IR9')
+search(regex, 'ghdfj32')
+search(regex, 'DSJKHD23')
 
 # What's a Perfect Power anyway? - 5 kyu
 # A perfect power is a classification of positive integers:
