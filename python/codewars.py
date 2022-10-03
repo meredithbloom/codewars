@@ -19,6 +19,7 @@ def increment_string(string):
     pattern = r"[0-9]"
     num_split = re.findall(pattern, string)
     print(num_split)
+    # if no numbers at all
     if len(num_split) == 0:
         new_num = 1
         new_string = string+str(1)
@@ -26,8 +27,13 @@ def increment_string(string):
         return new_string
     num = int("".join(num_split))
     new_num = num + 1
-    #print(new_num)
-    if len(str(new_num)) == len(num_split):
+    if num_split[-1] == '0':
+        # if all leading zeros
+        cutoff = string[:-len(str(new_num))]
+        new_string = cutoff+'1'
+        print(new_string)
+        return new_string
+    elif len(str(new_num)) == len(num_split):
         # if new number needs to replace leading zero
         num_start = re.search(pattern, string)
         start = num_start.span()[0]
@@ -53,6 +59,7 @@ increment_string("foo9")
 increment_string("foobar23")
 increment_string("foo099")
 increment_string("foobar00")
+increment_string("foobar99")
 
 # Sudoku Solution Validator - 4 kyu
 '''
