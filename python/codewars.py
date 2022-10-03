@@ -1,3 +1,24 @@
+# String Incrementer - 5 kyu
+# Your job is to write a function which increments a string, to create a new string.
+# If the string already ends with a number, the number should be incremented by 1.
+# If the string does not end with a number. the number 1 should be appended to the new string.
+
+# foo-> foo1
+
+# foobar23-> foobar24
+
+# foo0042-> foo0043
+
+# foo9-> foo10
+
+# foo099-> foo100
+
+def increment_string(string):
+    pass
+
+
+
+
 # Sudoku Solution Validator - 4 kyu
 '''
 Write a function validSolution/ValidateSolution/valid_solution() that accepts a 2D array representing a Sudoku board, and returns true if it is a valid solution, or false otherwise. The cells of the sudoku board may also contain 0's, which will represent empty cells. Boards containing one or more zeroes are considered to be invalid solutions.
