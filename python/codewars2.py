@@ -1,3 +1,37 @@
+# String Incrementer - 5 kyu VERSION 2
+# Your job is to write a function which increments a string, to create a new string.
+# If the string already ends with a number, the number should be incremented by 1.
+# If the string does not end with a number. the number 1 should be appended to the new string.
+
+# foo-> foo1
+
+# foobar23-> foobar24
+
+# foo0042-> foo0043
+
+# foo9-> foo10
+
+# foo099-> foo100
+
+import re
+
+def increment_string(string):
+    pattern = r"[0-9]"
+    num_split = re.findall(pattern, string)
+    # first we need to find where the number starts
+
+
+
+#increment_string("foo")
+increment_string("foobar123")
+increment_string("foo0042")
+#increment_string("foo9")
+increment_string("foobar23")
+increment_string("foo099")
+increment_string("foobar00")
+increment_string("foobar99")
+increment_string("fo99obar99")
+
 # The first non-repeating character - 5 kyu
 
 # Write a function named first_non_repeating_letter that takes a string input, and returns the first character that is not repeated anywhere in the string.
