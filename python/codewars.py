@@ -13,11 +13,46 @@
 
 # foo099-> foo100
 
+import re
+
 def increment_string(string):
-    pass
+    pattern = r"[0-9]"
+    num_split = re.findall(pattern, string)
+    print(num_split)
+    if len(num_split) == 0:
+        new_num = 1
+        new_string = string+str(1)
+        print(new_string)
+        return new_string
+    num = int("".join(num_split))
+    new_num = num + 1
+    #print(new_num)
+    if len(str(new_num)) == len(num_split):
+        # if new number needs to replace leading zero
+        num_start = re.search(pattern, string)
+        start = num_start.span()[0]
+        new_string = string[:start]+str(new_num)
+        print(new_string)
+    elif len(str(new_num)) < len(num_split):
+        # if new number needs leading zeros
+        num_start = re.search(r"[1-9]", string)
+        start = num_start.span()[0]
+        new_string = string[:start]+str(new_num)
+        print(new_string)
+    elif len(num_split) == 1:
+        num_start = re.search(pattern, string)
+        start = num_start.span()[0]
+        new_string = string[:start]+str(new_num)
+        print(new_string)
+    return new_string
 
-
-
+increment_string("foo")
+increment_string("foobar123")
+increment_string("foo0042")
+increment_string("foo9")
+increment_string("foobar23")
+increment_string("foo099")
+increment_string("foobar00")
 
 # Sudoku Solution Validator - 4 kyu
 '''
@@ -58,17 +93,17 @@ def valid_solution(board):
     
     
     
-print(valid_solution([
-    [1, 2, 3, 4, 5, 6, 7, 8, 9], 
-    [2, 3, 4, 5, 6, 7, 8, 9, 1], 
-    [3, 4, 5, 6, 7, 8, 9, 1, 2], 
-    [4, 5, 6, 7, 8, 9, 1, 2, 3], 
-    [5, 6, 7, 8, 9, 1, 2, 3, 4], 
-    [6, 7, 8, 9, 1, 2, 3, 4, 5], 
-    [7, 8, 9, 1, 2, 3, 4, 5, 6], 
-    [8, 9, 1, 2, 3, 4, 5, 6, 7], 
-    [9, 1, 2, 3, 4, 5, 6, 7, 8]
-])) # false
+# print(valid_solution([
+#     [1, 2, 3, 4, 5, 6, 7, 8, 9], 
+#     [2, 3, 4, 5, 6, 7, 8, 9, 1], 
+#     [3, 4, 5, 6, 7, 8, 9, 1, 2], 
+#     [4, 5, 6, 7, 8, 9, 1, 2, 3], 
+#     [5, 6, 7, 8, 9, 1, 2, 3, 4], 
+#     [6, 7, 8, 9, 1, 2, 3, 4, 5], 
+#     [7, 8, 9, 1, 2, 3, 4, 5, 6], 
+#     [8, 9, 1, 2, 3, 4, 5, 6, 7], 
+#     [9, 1, 2, 3, 4, 5, 6, 7, 8]
+# ])) # false
 
 
 
