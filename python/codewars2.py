@@ -16,10 +16,13 @@
 import re
 
 def increment_string(string):
-    pattern = r"[0-9]"
-    num_split = re.findall(pattern, string)
+    pattern1 = r"[0-9](?=[0-9]|$)"
+    num_split = re.findall(pattern1, string)
+    
     # first we need to find where the number starts
-
+    #num_split.append(string[-1])
+    print(num_split)
+    #print(re.split(pattern, string))
 
 
 #increment_string("foo")
@@ -72,10 +75,10 @@ odd_chars = '~><#~><'
 repeating = 'abba'
 empty = ''
 
-first_non_repeating_letter(simple2)
-first_non_repeating_letter(odd_chars)
-first_non_repeating_letter(simple3)
-first_non_repeating_letter(letter_case)
+# first_non_repeating_letter(simple2)
+# first_non_repeating_letter(odd_chars)
+# first_non_repeating_letter(simple3)
+# first_non_repeating_letter(letter_case)
 
 # Regex Password Validation - 5kyu
 # You need to write regex that will validate a password to make sure it meets the following criteria:
