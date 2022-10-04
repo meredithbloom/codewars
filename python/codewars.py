@@ -59,7 +59,7 @@ increment_string("foo9")
 increment_string("foobar23")
 increment_string("foo099")
 increment_string("foobar00")
-increment_string("foobar99")
+
 
 # Sudoku Solution Validator - 4 kyu
 '''
