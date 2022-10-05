@@ -1,3 +1,32 @@
+# Multiplication Table - 6 kyu
+# Your task is to create an NxN multiplication table, of size provided in parameter
+
+size1 = 3
+size2 = 4
+
+def multiplication_table(size):
+    #table = []
+    if size == 0:
+        return -1
+    max_num = size*size
+    step = size
+    start = 0
+    table = [x for x in range(1,max_num+1)]
+    tables = []
+    #print(table)
+    for i in range(start, max_num, step):
+        x = i
+        tables.append(table[x:x+step])
+    print(tables)
+        
+    
+    
+        
+        
+multiplication_table(size1)
+multiplication_table(size2)     
+
+
 # Human readable duration format - 4 kyu
 # Your task in order to complete this Kata is to write a function which formats a duration, given as a number of seconds, in a human-friendly way.
 
@@ -93,7 +122,7 @@ dur5 = 3662
 #format_duration(dur2)
 #format_duration(dur3)
 #format_duration(dur4)
-format_duration(dur5)
+#format_duration(dur5)
 
 # Maximum subarray sum - 5 kyu
 # The maximum sum subarray problem consists in finding the maximum sum of a contiguous subsequence in an array or list of integers:
@@ -127,7 +156,7 @@ def max_sequence(arr):
 # or a range of integers denoted by the starting integer separated from the end integer in the range by a dash, '-'. The range includes all integers in the interval including both endpoints. It is not considered a range unless it spans at least 3 numbers. For example "12,13,15-17"
 # Complete the solution so that it takes a list of integers in increasing order and returns a correctly formatted string in the range format.
 
-import more_itertools as more
+#import more_itertools as more
 from itertools import groupby
 
 solution1 = [-10, -9, -8, -6, -3, -2, -1, 0, 1, 3, 4, 5, 7, 8, 9, 10, 11, 14, 15, 17, 18, 19, 20]
