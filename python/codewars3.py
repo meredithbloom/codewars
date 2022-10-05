@@ -9,22 +9,21 @@ def multiplication_table(size):
     if size == 0:
         return -1
     max_num = size*size
-    step = size
-    start = 0
-    table = [x for x in range(1,max_num+1)]
-    tables = []
-    #print(table)
-    for i in range(start, max_num, step):
-        x = i
-        tables.append(table[x:x+step])
-    print(tables)
+    nums = []
+    for row in range(1,size+1):
+        cur = []
+        for i in range(1,size+1):
+            cur.append(row*i)
+        nums.append(cur)
+    print(nums)
+    
         
     
     
         
         
 multiplication_table(size1)
-multiplication_table(size2)     
+#multiplication_table(size2)     
 
 
 # Human readable duration format - 4 kyu
