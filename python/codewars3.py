@@ -11,6 +11,7 @@ def create_phone_number(n):
     last4 = "".join([str(x) for x in n[-4:]])
     combined = area_code+middle+last4
     print(combined)
+    return combined
     
     
     
