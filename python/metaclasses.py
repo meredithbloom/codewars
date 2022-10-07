@@ -139,7 +139,7 @@ class BooleanField(ValidationField):
 
 class DateTimeField(ValidationField):
     # needs date (day, month, year) and time
-    def __init__(self, auto_now = False, default = None, **kwargs):
+    def __init__(self, default = None, auto_now = False, **kwargs):
         # initialize parent class validation field
         super().__init__(**kwargs)
         # datetime specific params
@@ -152,15 +152,15 @@ class DateTimeField(ValidationField):
             if self._default is None and self.auto_now is True:
                 return datetime.datetime.now()
             else:
-                return self.default_
+                return self._default
         return super().__getattribute__(name)
     
     def validate(self, val):
+        # check if blank is true or false
         super().validate(val)
-        
         if val is None:
             return
-        
+        # checks if datetime object
         if not isinstance(val, datetime.datetime):
             raise ValidationError
 
@@ -169,14 +169,56 @@ class EmailField(ValidationField):
     # needs address, subdomain, domain - all strings of alphabetic chars with min and max length
     def __init__(self, min_length = 0, max_length = None, **kwargs):
         # initialize parent class validation field
-        super().__init__(*kwargs)
+        super().__init__(**kwargs)
         # email address specific params
         self.min_length = min_length
         self.max_length = max_length
 
     def validate(self, val):
-        pass
+        super().validate(val)
+        
+        if val is None:
+            return
+        # check if string data type
+        if not isinstance(val, str):
+            raise ValidationError
+        # need to check if min/max length compliant, and match email regex
+        if self.min_length is not None and len(val) < self.min_length:
+            raise ValidationError
+        
+        if self.max_length is not None and self.max_length < len(val):
+            raise ValidationError
 
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", val):
+            raise ValidationError
 
 class Model:
-    pass
+    def __init__(self, **kwargs):
+        # iterating through directory of class methods searching for public methods
+        for i in [i for i in dir(self.__class__) if i.startswith('_f_')]:
+            # pulling attribute from public method
+            attribute = getattr(self.__class__,i)
+            # assigning attribute
+            setattr(self, i[3:], attribute.default)
+        
+        # sets keyword -> value pairs as attributes of class instance/object
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        
+    # altering behavior of future sub classes of Model to ensure relevant attributes are deemed public methods   
+    def __init_subclass__(cls) -> None:
+        for i in [i for i in dir(cls) if not i.startswith('_')]:
+            attribute = getattr(cls, i)
+            # if attribute is any of the above defined classes
+            if isinstance(attribute, (CharField, IntegerField, BooleanField, DateTimeField, EmailField)):
+                delattr(cls, i)
+                # resetting attribute as public method
+                setattr(cls, '_f_'+i, attribute)
+        super().__init_subclass__()
+        
+    def validate(self):
+        # if both a public method and one of the special validation ones
+        for i in [i for i in dir(self.__class__) if i.startswith('_f_') and hasattr(self, i[3:])]:
+            class_attribute = getattr(self.__class__, i)
+            instance_attribute = getattr(self, i[3:])
+            class_attribute.validate(instance_attribute)
