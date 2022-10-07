@@ -54,32 +54,59 @@
 
 
 class ValidationError:
-    pass
+    # returns different validation error depending on source of error
+    def __init__(self, error_message = None):
+        self.error_message = error_message
 
 
 class CharField:
-    def __init__(self, min_length = 0, max_length = None):
+    def __init__(self, min_length = 0, max_length = None, default = None, blank = False):
         self.min_length = min_length
         self.max_length = max_length
+        self.default = default
+        
+    # test if input is string of min and max length. if not, return validation error
+    def validate(self):
+        pass
         
 
 
 class IntegerField:
-    def __init__(self, min_value = None, max_value = None):
+    def __init__(self, min_value = None, max_value = None, default = None, blank=False):
         self.min_value = min_value
         self.max_value = max_value
+        self.default = default
+
+    # test if integer data type within min and max val constraints. if not, return validation error
+    def validate(self):
+        pass
 
 
 class BooleanField:
-    pass
+    # either true or false
+    def __init__(self, default = None, blank = False):
+        pass
 
+    # test if true or false value, if not return validation error message
+    def validate(self):
+        pass
 
 class DateTimeField:
-    pass
+    # needs date (day, month, year) and time
+    def __init__(self, auto_new = False, default = None):
+        self.auto_new = auto_new
+    
+    def validate(self):
+        pass
 
 
 class EmailField:
-    pass
+    # needs address, subdomain, domain - all strings of alphabetic chars with min and max length
+    def __init__(self, blank = False, default = None):
+        pass
+
+    def validate(self):
+        pass
 
 
 class Model:
