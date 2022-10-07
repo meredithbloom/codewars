@@ -54,7 +54,7 @@
 
 import datetime
 import re
-import typing
+from typing import Any
 
 class ValidationError(Exception):
     pass
@@ -65,6 +65,7 @@ class ValidationField:
     def __init__(self, default = None, blank=False, **kwargs):
         self.default = default
         self.blank = blank
+        # will hash keyword -> values to instance dict
         self.__dict__.update(**kwargs)
 
     # if there has to be a value set and there is no val, return validation error
@@ -81,7 +82,6 @@ class CharField(ValidationField):
         self.min_length = min_length
         self.max_length = max_length
             
-    # test if input is string of min and max length. if not, return validation error
     def validate(self, val):
         # checks if blank is true or false
         super().validate(val)
@@ -99,15 +99,13 @@ class CharField(ValidationField):
         
 
 class IntegerField(ValidationField):
-    def __init__(self, min_value = None, max_value = None, default = None, blank=False):
+    def __init__(self, min_value = None, max_value = None, **kwargs):
         # initializes parent class validation field
         super().__init__(**kwargs)
-        
         # additional params specific to integer field
         self.min_value = min_value
         self.max_value = max_value
 
-    # test if integer data type within min and max val constraints. if not, return validation error
     def validate(self, val):
         # checks if blank true or false
         super().validate(val)
@@ -126,28 +124,57 @@ class IntegerField(ValidationField):
 
 class BooleanField(ValidationField):
     # either true or false
-    def __init__(self, default = None, blank = False):
-        pass
-
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
     # test if true or false value, if not return validation error message
-    def validate(self):
-        pass
+    def validate(self, val):
+        # checks if blank is true or false
+        super().validate(val)
+        if val is None:
+            return
+        # check if boolean data type
+        if not isinstance(val, bool):
+            raise ValidationError
+        
 
 class DateTimeField(ValidationField):
     # needs date (day, month, year) and time
-    def __init__(self, auto_new = False, default = None):
-        self.auto_new = auto_new
+    def __init__(self, auto_now = False, default = None, **kwargs):
+        # initialize parent class validation field
+        super().__init__(**kwargs)
+        # datetime specific params
+        self.auto_now = auto_now
+        # adds extra _ before default to separate from parent class default attribute
+        self._default = default
     
-    def validate(self):
-        pass
+    def __getattribute__(self, name: str) -> Any:
+        if name == 'default':
+            if self._default is None and self.auto_now is True:
+                return datetime.datetime.now()
+            else:
+                return self.default_
+        return super().__getattribute__(name)
+    
+    def validate(self, val):
+        super().validate(val)
+        
+        if val is None:
+            return
+        
+        if not isinstance(val, datetime.datetime):
+            raise ValidationError
 
 
 class EmailField(ValidationField):
     # needs address, subdomain, domain - all strings of alphabetic chars with min and max length
-    def __init__(self, blank = False, default = None):
-        pass
+    def __init__(self, min_length = 0, max_length = None, **kwargs):
+        # initialize parent class validation field
+        super().__init__(*kwargs)
+        # email address specific params
+        self.min_length = min_length
+        self.max_length = max_length
 
-    def validate(self):
+    def validate(self, val):
         pass
 
 
