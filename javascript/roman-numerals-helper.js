@@ -38,6 +38,7 @@ class RomanNumeralsHelper {
         900: 'CM',
         1000: 'M'
     }
+    
 
     checkThousands(num) {
         // number of whole thousands, then remainder
@@ -91,6 +92,7 @@ class RomanNumeralsHelper {
         }
         // check for thousands, hundreds, tens, ones
         else {
+            console.log(num)
             let romanNumeral = ''
             let { thousands, remFiveHundreds } = this.checkThousands(num)
             let {fiveHundreds, remHundreds} = this.checkFiveHundreds(remFiveHundreds)
@@ -140,14 +142,73 @@ class RomanNumeralsHelper {
         }
     }
 
+    countFullNumerals(romanNum) {
+        return romanNum.split('').reduce((map, char) => {
+            return {
+                ...map,
+                [char] : (map[char] || 0) + 1
+            }
+        }, {})
+    }
+
+    halfVals = ['IV', 'IX', 'XL', 'XC', 'CD', 'CM']
+
+    countHalfNumerals(romanNum) {
+        let halfValCount = {}
+        for (let val of this.halfVals) {
+            if (romanNum.match(val)) {
+                halfValCount[val] = 1
+            }
+        }
+        return halfValCount
+    }
+
     fromRoman(romanNum) {
         // if roman numeral is defined in base dictionary
         if (this.romanValues[romanNum]) {
             return this.romanValues[romanNum]
         }
-        // we know there is at least 1000
-        else if (romanNum.includes('M')) {
-
+        // we have to calculate
+        else {
+        
+            let totalVal = 0
+            // check for half values
+            let halfCount = this.countHalfNumerals(romanNum)
+            let numeralCount = this.countFullNumerals(romanNum)
+            console.log(halfCount)
+            if (Object.keys(halfCount).length > 0) {
+                let toSub = {}
+                for (let key of Object.keys(halfCount)) {
+                    totalVal += this.romanValues[key]
+                    //console.log(totalVal)
+                    let splitVals = key.split("")
+                    for (let val of splitVals) {
+                        if (toSub[val]) {
+                            toSub[val] += 1
+                        } else {
+                            toSub[val] = 1
+                        }
+                    }
+                }
+                console.log(toSub)
+                console.log(numeralCount)
+                console.log(`counting only half values, value is ${totalVal}`)
+                for (let key of Object.keys(numeralCount)) {
+                    if (toSub[key]) {
+                        numeralCount[key] -= toSub[key]
+                    }
+                }
+            }
+            console.log(numeralCount)
+            for (let key of Object.keys(numeralCount)) {
+                if (numeralCount[key] > 0) {
+                    let toAdd = numeralCount[key] * this.romanValues[key]
+                    console.log(toAdd)
+                    totalVal += toAdd
+                }
+            }
+            console.log(totalVal)
+            return(totalVal)
         }
     }
 
@@ -157,10 +218,12 @@ const RomanNumerals = new RomanNumeralsHelper()
 //console.log(RomanNumerals.toRoman(1000))
 //console.log(RomanNumerals.fromRoman('M'))
 
-console.log(RomanNumerals.toRoman(1990))
-console.log(RomanNumerals.toRoman(2008))
+//console.log(RomanNumerals.toRoman(1990))
+//console.log(RomanNumerals.toRoman(2008))
 //console.log(RomanNumerals.toRoman(4))
 //console.log(RomanNumerals.toRoman(1666))
-// RomanNumerals.fromRoman('XXI')
-// RomanNumerals.fromRoman('IV')
-// RomanNumerals.fromRoman('MMVIII')
+//RomanNumerals.fromRoman('XXI')
+//RomanNumerals.fromRoman('IV')
+//RomanNumerals.fromRoman('MMVIII')
+//RomanNumerals.fromRoman('MDCLXVI')
+RomanNumerals.fromRoman('MMDCCXLIX') // 2749
