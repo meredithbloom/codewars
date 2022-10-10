@@ -42,15 +42,27 @@ class RomanNumeralsHelper {
     checkThousands(num) {
         // number of whole thousands, then remainder
         let thousands = Math.floor(num / 1000)
-        let remHundreds = num - thousands*1000
-        return {thousands, remHundreds}
+        let remFiveHundreds = num - thousands*1000
+        return {thousands, remFiveHundreds}
+    }
+
+    checkFiveHundreds(num) {
+        let fiveHundreds = Math.floor(num / 500)
+        let remHundreds = num - fiveHundreds * 500
+        return {fiveHundreds, remHundreds}
     }
 
     checkHundreds(num) {
         // number of whole hundreds
         let hundreds = Math.floor(num / 100)
-        let remTens = num-hundreds*100
-        return {hundreds, remTens}
+        let remFifties = num-hundreds*100
+        return {hundreds, remFifties}
+    }
+
+    checkFifties(num) {
+        let fifties = Math.floor(num / 50)
+        let remTens = num - fifties * 50
+        return {fifties, remTens}
     }
 
     checkTens(num) {
@@ -80,22 +92,51 @@ class RomanNumeralsHelper {
         // check for thousands, hundreds, tens, ones
         else {
             let romanNumeral = ''
-            let { thousands, remHundreds } = this.checkThousands(num)
-            let { hundreds, remTens } = this.checkHundreds(remHundreds)
+            let { thousands, remFiveHundreds } = this.checkThousands(num)
+            let {fiveHundreds, remHundreds} = this.checkFiveHundreds(remFiveHundreds)
+            let { hundreds, remFifties } = this.checkHundreds(remHundreds)
+            // check if 900
+            if ((hundreds * 100 + fiveHundreds * 500) === 900) {
+                fiveHundreds = 0
+                hundreds = 9
+            }
+            let { fifties, remTens } = this.checkFifties(remFifties)
             let { tens, remFives } = this.checkTens(remTens)
-            let {fives, ones} = this.checkFives(remFives)
-            console.log(`${thousands}000 + ${hundreds}00 + ${tens}0 + ${fives*5} + ${ones}`)
-            let tally = [thousands*1000, hundreds*100, tens*10, fives*5, ones]
+            // check if 90
+            if ((tens * 10 + fifties * 50) === 90) {
+                fifties = 0
+                tens = 9
+            }
+            let { fives, ones } = this.checkFives(remFives)
+            // check if 9
+            if ((fives * 5 + ones === 9)) {
+                fives = 0
+                ones = 9
+            }
+            console.log(`${thousands}000 + ${fiveHundreds*500} + ${hundreds}00 + ${fifties*50} + ${tens}0 + ${fives*5} + ${ones}`)
+            let tally = [thousands*1000, fiveHundreds*500, hundreds*100, fifties*50, tens*10, fives*5, ones]
             for (let val of tally) {
                 if (this.checkIfRoman(val)) {
-                    //console.log(this.checkIfRoman(val))
                     romanNumeral += this.checkIfRoman(val)
                 } else {
-                    // calculate what roman numeral should be
-                    console.log(val)
+                    // calculate what roman numeral should be. only need to check for base 10 nums
+                    if (val === tally[0] && val > 0) {
+                        let toAdd = 'M'.repeat(val / 1000)
+                        romanNumeral += toAdd
+                    } else if (val === tally[2] && val > 0) {
+                        let toAdd = 'C'.repeat(val / 100)
+                        romanNumeral += toAdd
+                    } else if (val === tally[4] && val > 0) {
+                        let toAdd = 'X'.repeat(val / 10)
+                        romanNumeral+=toAdd
+                    } else if (val === tally[6] && val > 0) {
+                        let toAdd = 'I'.repeat(val)
+                        romanNumeral+= toAdd
+                    }
                 }
             }
-            console.log(romanNumeral)
+            //console.log(romanNumeral)
+            return(romanNumeral)
         }
     }
 
@@ -118,6 +159,8 @@ const RomanNumerals = new RomanNumeralsHelper()
 
 console.log(RomanNumerals.toRoman(1990))
 console.log(RomanNumerals.toRoman(2008))
+//console.log(RomanNumerals.toRoman(4))
+//console.log(RomanNumerals.toRoman(1666))
 // RomanNumerals.fromRoman('XXI')
 // RomanNumerals.fromRoman('IV')
 // RomanNumerals.fromRoman('MMVIII')
