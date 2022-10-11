@@ -1,5 +1,29 @@
 
 <?php
+// Convert string to camel case - 6 kyu
+// Complete the method/function so that it converts dash/underscore delimited words into camel casing. The first word within the output should be capitalized only if the original word was capitalized (known as Upper Camel Case, also often referred to as Pascal case).
+
+$string1 = "the-stealth-warrior"; // theStealthWarrior
+$string2 = "The_Stealth_Warrior"; // TheStealthWarrior
+
+function toCamelCase($str) {
+    $words = preg_split('~[_\-]~', $str);
+    $combinedWord = '';
+    foreach ($words as $key => $word) {
+        if ($key < 1) {
+            $combinedWord = $combinedWord.$word;
+        }
+        else {
+            $combinedWord = $combinedWord . ucfirst($word);
+        }
+    }
+    echo $combinedWord."\n";
+    return $combinedWord;
+}
+
+toCamelCase($string2);
+toCamelCase($string1);
+
 // Duplicate Encoder - 6 kyu
 // The goal of this exercise is to convert a string to a new string where each character in the new string is "(" if that character appears only once in the original string, or ")" if that character appears more than once in the original string. Ignore capitalization when determining if a character is a duplicate.
 
@@ -32,7 +56,7 @@ function duplicate_encode($word) {
     
 }
 
-duplicate_encode($ex1);
+//duplicate_encode($ex1);
 
 // Create Phone Number - 6 kyu
 // Write a function that accepts an array of 10 integers (between 0 and 9), that returns a string of those numbers in the form of a phone number.
