@@ -1,5 +1,31 @@
 
 <?php
+// Stop gninnipS My sdroW! - 6 kyu
+// Write a function that takes in a string of one or more words, and returns the same string, but with all five or more letter words reversed (Just like the name of this Kata). Strings passed in will consist of only letters and spaces. Spaces will be included only when more than one word is present.
+function spinWords(string $str) {
+    $words = explode(" ", $str);
+    $reworked = [];
+    foreach ($words as $word) {
+        if (strlen($word) > 4) {
+            $word = strrev($word);
+        }
+        array_push($reworked, $word);
+    }
+    $newString = implode(" ", $reworked);
+    echo $newString;
+}
+
+
+$str1 = "Hey fellow warriors";
+$str2 = "This is a test";
+$str3 = "This is another test";
+
+spinWords($str1);
+echo "\n";
+spinWords($str2);
+echo "\n";
+spinWords($str3);
+
 // Convert string to camel case - 6 kyu
 // Complete the method/function so that it converts dash/underscore delimited words into camel casing. The first word within the output should be capitalized only if the original word was capitalized (known as Upper Camel Case, also often referred to as Pascal case).
 
@@ -21,8 +47,8 @@ function toCamelCase($str) {
     return $combinedWord;
 }
 
-toCamelCase($string2);
-toCamelCase($string1);
+// toCamelCase($string2);
+// toCamelCase($string1);
 
 // Duplicate Encoder - 6 kyu
 // The goal of this exercise is to convert a string to a new string where each character in the new string is "(" if that character appears only once in the original string, or ")" if that character appears more than once in the original string. Ignore capitalization when determining if a character is a duplicate.
