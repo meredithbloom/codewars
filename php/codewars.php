@@ -1,5 +1,41 @@
 
 <?php
+// Beeramid - 5 kyu
+// Let's pretend your company just hired your friend from college and paid you a referral bonus. Awesome! To celebrate, you're taking your team out to the terrible dive bar next door and using the referral bonus to buy, and build, the largest three-dimensional beer can pyramid you can. And then probably drink those beers, because let's pretend it's Friday too.
+
+// A beer can pyramid will square the number of cans in each level - 1 can in the top level, 4 in the second, 9 in the next, 16, 25...
+
+// Complete the beeramid function to return the number of complete levels of a beer can pyramid you can make, given the parameters of:
+
+// your referral bonus, and
+// the price of a beer can
+
+function beeramid($bonus, $price) {
+    if ($bonus < 0) {
+        return 0;
+    }
+    $total_beers = floor($bonus/$price);
+    $sum = 0;
+    for ($level = 0; $level <= $total_beers; $level++) {
+        $beers_per_level = $level**2;
+        $sum += $beers_per_level;
+        if ($sum == $total_beers) {
+            return $level;
+        }
+        elseif ($sum > $total_beers) {
+            return $level-1;
+        }
+    }    
+}
+
+//beeramid(1500,2); // should === 12
+//beeramid(5000,3); // should === 16
+beeramid(9, 2); // 1
+beeramid(21, 1.5); // 3
+//beeramid(-1,4); // 0
+beeramid(49,6.2); // 2
+
+
 // Stop gninnipS My sdroW! - 6 kyu
 // Write a function that takes in a string of one or more words, and returns the same string, but with all five or more letter words reversed (Just like the name of this Kata). Strings passed in will consist of only letters and spaces. Spaces will be included only when more than one word is present.
 function spinWords(string $str) {
@@ -20,11 +56,11 @@ $str1 = "Hey fellow warriors";
 $str2 = "This is a test";
 $str3 = "This is another test";
 
-spinWords($str1);
-echo "\n";
-spinWords($str2);
-echo "\n";
-spinWords($str3);
+// spinWords($str1);
+// echo "\n";
+// spinWords($str2);
+// echo "\n";
+// spinWords($str3);
 
 // Convert string to camel case - 6 kyu
 // Complete the method/function so that it converts dash/underscore delimited words into camel casing. The first word within the output should be capitalized only if the original word was capitalized (known as Upper Camel Case, also often referred to as Pascal case).
