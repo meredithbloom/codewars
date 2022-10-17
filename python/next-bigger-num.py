@@ -25,6 +25,41 @@ TOPICS:
 strings, refactoring
 
 '''
+from itertools import permutations
+
 
 def next_bigger(n):
-    pass
+    nums = list(map(lambda x: int(x), list(str(n))))
+    # check for conditions to return -1
+    # single digit
+    if len(nums) == 1:
+        return -1
+    # if all digits are the same
+    if len(set(nums)) == 1:
+        return -1
+    # if already ordered from greatest to smallest
+    if nums == sorted(nums, reverse=True):
+        return -1
+    # for smaller numbers
+    if len(nums) < 5:
+        perms = list(permutations(str(n), len(nums)))
+        print(perms)
+        # create list of only those numbers that are larger than n from permutations list
+        joined = [int("".join(x)) for x in perms if int("".join(x)) > int(n)]
+        #print(joined)
+        if len(joined) > 0:
+            return joined[0]
+        else:
+            return -1
+    # for larger numbers we need to start flipping nums from right to left
+    
+    
+
+
+print(next_bigger(12))
+print(next_bigger(513))
+print(next_bigger(531))
+print(next_bigger(2017))
+print(next_bigger(414))
+print(next_bigger(144))
+print(next_bigger(1234567890))
