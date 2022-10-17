@@ -21,6 +21,9 @@ nextBigger(num: 9)   // returns nil
 nextBigger(num: 111) // returns nil
 nextBigger(num: 531) // returns nil
 
+TOPICS:
+strings, refactoring
+
 '''
 
 def next_bigger(n):
