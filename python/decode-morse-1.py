@@ -43,13 +43,10 @@ def decode_morse(morse_code):
     # MORSE_CODE['.-'] = 'A'
     # MORSE_CODE['--...'] = '7'
     # MORSE_CODE['...-..-'] = '$'
-    string = ''
-    words = morse_code.split('   ')
-    #print(words)
-    for word in words:
-        letters = [MORSE_CODE[letter] for letter in word.split(' ')]
-        print(letters)
+    morse = ["".join([MORSE_CODE[letter] for letter in word.split(' ')]) for word in morse_code.strip().split('   ')]
+    return(" ".join(morse))
             
 
 decode_morse('...   ---   ...')
 decode_morse('... --- ...')
+decode_morse('----- .---- ..--- ---.. ----.')
