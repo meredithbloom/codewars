@@ -34,22 +34,43 @@ class Student {
 function mostMoney(students) {
     let most_money;
     let money = 0
+    let sums = []
+    // if there is only one student
     if (students.length === 1) {
         let { name, fives, tens, twenties } = students[0]
-        return (fives * 5) + (tens * 10) + (twenties * 20)
+        console.log(name)
+        return name
     }
-    for (let s of students) {
-        let { name, fives, tens, twenties } = s
-        let money_count = (fives * 5) + (tens * 10) + (twenties * 20)
-        s['total_money'] = money_count
-        // console.log(s)
-        // console.log(`${name} has $${money_count}`)
-        if (money_count > money) {
-            most_money = s
-            money = money_count
-            console.log(`The current student with the most money is ${name}, with $${money_count}`)
+    // if there is more than one student
+    else {
+        for (let s of students) {
+            let { name, fives, tens, twenties } = s
+            let money_count = (fives * 5) + (tens * 10) + (twenties * 20)
+            sums.push(money_count)
+            s['total_money'] = money_count
+            if (money_count > money) {
+                most_money = s
+                money = money_count
+                //console.log(`The current student with the most money is ${name}, with $${money_count}`)
+            }
+        }
+        //console.log(sums)
+        //console.log(new Set(sums))
+        if (new Set(sums).size === 1) {
+            console.log('all')
+            return 'all'
+        }
+        // if they don't all have the same amount of money
+        else {
+            console.log(most_money.name)
+            return most_money.name
         }
     }
+    // need to check if all students have the same amount
+    //console.log(students)
+    //console.log(sums)
+    
+    
 
 }
 
@@ -62,5 +83,7 @@ const cam = new Student("Cameron", 2, 2, 0);
 const geoff = new Student("Geoff", 0, 3, 0);
 
 
-mostMoney([andy, stephen, eric, david, phil])
-//mostMoney([cam, geoff, andy, stephen, eric, david, phil])
+mostMoney([andy, stephen, eric, david, phil]) // Eric
+mostMoney([cam, geoff, andy, stephen, eric, david, phil]) // Eric
+mostMoney([cam, geoff]) // all
+mostMoney([andy]) // andy
