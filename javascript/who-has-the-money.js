@@ -51,11 +51,9 @@ function mostMoney(students) {
             if (money_count > money) {
                 most_money = s
                 money = money_count
-                //console.log(`The current student with the most money is ${name}, with $${money_count}`)
             }
         }
-        //console.log(sums)
-        //console.log(new Set(sums))
+        // if they all have the same amount of money
         if (new Set(sums).size === 1) {
             console.log('all')
             return 'all'
@@ -66,12 +64,6 @@ function mostMoney(students) {
             return most_money.name
         }
     }
-    // need to check if all students have the same amount
-    //console.log(students)
-    //console.log(sums)
-    
-    
-
 }
 
 const andy = new Student("Andy", 0, 0, 2);
