@@ -60,8 +60,19 @@ class VigenereCipher(object):
     def decode(self, text):
         new_key = self.repeat_key(self.key, len(text))
         text = list(text)
-    
+        for i in range(len(text)):
+            # only convert chars in given alphabet
+            if (text[i]) in abc:
+                letter, match = text[i], new_key[i]
+                start_index, shift = self.alphabet.index(letter), self.alphabet.index(match)
+                new_index = start_index-shift
+                if new_index < 0:
+                    new_index = new_index + len(self.alphabet)
+                text[i] = self.alphabet[new_index]
+        print("".join(text))
+        return("".join(text))
 
 c = VigenereCipher(key, abc)
 c.encode('my secret code i want to secure')
 c.encode('codewars')
+c.decode('laxxhsj')
