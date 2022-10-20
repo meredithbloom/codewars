@@ -27,7 +27,7 @@ key = 'password'
 
 class VigenereCipher(object):
     def __init__(self, key, alphabet):
-        # to shift
+        # to find index count to shift letter
         self.alphabet = alphabet
         # to repeat until it matches length of string to encode/decode
         self.key = key
@@ -40,18 +40,28 @@ class VigenereCipher(object):
     
     def encode(self, text):
         new_key = self.repeat_key(self.key, len(text))
-        print(new_key)
+        #print(new_key)
+        text = list(text)
         for i in range(len(text)):
+            # only convert chars in given alphabet
             if (text[i] in abc):
                 letter, match = text[i], new_key[i]
-                shift = text.index(match)
+                start_index, shift = self.alphabet.index(letter), self.alphabet.index(match)
+                new_index = start_index + shift
+                #print(new_index)
+                if new_index >= len(self.alphabet):
+                    new_index = new_index - len(self.alphabet)
+                #print(letter, match, self.alphabet[new_index])
+                text[i] = self.alphabet[new_index]
+        print("".join(text))
+        return("".join(text))
+                
             
-            
-            
-
     def decode(self, text):
-        pass
+        new_key = self.repeat_key(self.key, len(text))
+        text = list(text)
     
 
 c = VigenereCipher(key, abc)
 c.encode('my secret code i want to secure')
+c.encode('codewars')
