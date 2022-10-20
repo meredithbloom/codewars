@@ -44,7 +44,7 @@ class VigenereCipher(object):
         text = list(text)
         for i in range(len(text)):
             # only convert chars in given alphabet
-            if (text[i] in abc):
+            if (text[i] in self.alphabet):
                 letter, match = text[i], new_key[i]
                 start_index, shift = self.alphabet.index(letter), self.alphabet.index(match)
                 new_index = start_index + shift
@@ -62,7 +62,7 @@ class VigenereCipher(object):
         text = list(text)
         for i in range(len(text)):
             # only convert chars in given alphabet
-            if (text[i]) in abc:
+            if (text[i]) in self.alphabet:
                 letter, match = text[i], new_key[i]
                 start_index, shift = self.alphabet.index(letter), self.alphabet.index(match)
                 new_index = start_index-shift
@@ -71,6 +71,7 @@ class VigenereCipher(object):
                 text[i] = self.alphabet[new_index]
         print("".join(text))
         return("".join(text))
+
 
 c = VigenereCipher(key, abc)
 c.encode('my secret code i want to secure')
