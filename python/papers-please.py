@@ -121,13 +121,11 @@ class Inspector:
         self.required_docs = {
             'citizens': [],
             'foreigners': [],
-            'both': [],
             'workers': []
         }
         self.required_vax = {
             'citizens': [],
             'foreigners': [],
-            'both': [],
             'workers': []
         }
         self.wanted_criminals = {}
@@ -156,7 +154,9 @@ class Inspector:
                 
             }
         }
-        self.all_docs = ['passport', 'certificate of vaccination', 'ID card', 'access permit', 'work pass', 'grant of asylum', 'diplomatic authorization']
+        #self.all_docs = ['passport', 'certificate of vaccination', 'ID card', 'access permit', 'work pass', 'grant of asylum', 'diplomatic authorization']
+        self.citizen_docs = ['passport', 'certificate of vaccination','id card']
+        self.foreigner_docs = ['passport', 'certificate of vaccination', 'access permit', 'work pass', 'grant of asylum', 'diplomatic authorization']
         self.all_countries = ['arstotzka','antegria','impor','kolechia','obristan','republia','united federation']
     
     def update_country_allowances(self, update):
@@ -182,6 +182,44 @@ class Inspector:
         print(self.denied_countries, self.allowed_countries)
         
     
+    def update_required_documents(self, update):
+        # method to process updates dedicated to updating required documents for each group (foreigners, citizens, workers)
+        # need to identify if "require" or "do not require" - will there be bulletins that say a group NO LONGER needs a type of document? probably
+        # need to identify which group
+        # need to identify which documents
+        split_index = update.index('require')
+        target_group = update[:split_index]
+        document = update[split_index+7:].strip()
+        if target_group == 'entrants':
+            self.required_docs['citizens'].append(document)
+            self.required_docs['foreigners'].append(document)
+            self.required_docs['workers'].append(document)
+        elif target_group == 'citizens':
+            # if not currently required
+            if document not in self.required_docs['citizens']:
+                self.required_docs['citizens'].append(document)
+            # if previously required
+            else:
+                self.required_docs['citizens'].remove(document)
+        elif target_group == 'foreigners':
+            # any document that a foreigner needs is also required by a worker
+            if document not in self.required_docs['foreigners']:
+                self.required_docs['foreigners'].append(document)
+                self.required_docs['workers'].append(document)
+            elif document in self.required_docs['foreigners'] and document in self.required_docs['workers']:
+                self.required_docs['foreigners'].remove(document)
+                self.required_docs['workers'].remove(document)
+            elif document in self.required_docs['foreigners'] and document not in self.required_docs['workers']:
+                self.required_docs['foreigners'].remove(document)
+        elif target_group == 'workers':
+            if document not in self.required_docs['workers']:
+                self.required_docs['workers'].append(document)
+            else:
+                self.required_docs['workers'].remove(document)
+        print(self.required_docs)
+            
+            
+        
         
     def receive_bulletin(self, bulletin):
         # TODO: process bulletin, divide into sub-strings
@@ -190,6 +228,7 @@ class Inspector:
         
         # reinitialize sorting of updates every day
         for update in updates:
+            # make everything lowercase for ease of string matching
             update = update.lower()
             if "allow" in update or "deny" in update:
                 self.update_country_allowances(update)
