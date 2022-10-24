@@ -112,3 +112,84 @@ Not every single possible case has been listed in this Description; use the test
 The concept of this kata is derived from the video game of the same name, but it is not meant to be a direct representation of the game.
 
 '''
+import re
+
+class Inspector:
+    def __init__(self):
+        self.allowed_countries = []
+        self.denied_countries = []
+        self.required_docs = {
+            'citizens': [],
+            'foreigners': [],
+            'both': []
+        }
+        self.required_vax = {
+            'citizens': [],
+            'foreigners': [],
+            'both': []
+        }
+        self.wanted_criminals = {}
+        self.country_details = {
+            'Arstotzka': {
+                'status': 'CITIZEN'
+            },
+            'Antegria': {
+                
+            },
+            'Impor': {
+            
+            },
+            'Kolechia': {
+            
+            },
+            'Obristan': {
+                
+            },
+            'Republia': {
+                
+            },
+            'United Federation': {
+                
+            }
+        }
+        
+        
+    def receive_bulletin(self, bulletin):
+        # TODO: process bulletin, divide into sub-strings
+        updates = bulletin.split('\n')
+        print(updates)
+        
+        # reinitialize sorting of updates every day
+        for update in updates:
+            pass
+        
+        # TODO: check for updates to list of nations whose citizens may enter
+        # string should start with Allow or Deny 
+        
+        # Arstotzka, Antegria, Impor, Kolechia, Obristan, Republia, and United Federation
+        
+        # TODO: updates to required documents
+        # string should include "require"
+        
+        # all entrants: passport, certificate_of_vaccination
+        # arstotzka citizens only: ID card
+        # only foreigners: access_permit, work_pass, grant_of_asylum, diplomatic_authorization
+        
+        # TODO: updates to required vaccinations
+        # string should include "require" AND "vaccination"
+        
+        
+        # TODO: update to currently wanted criminal
+        pass
+    
+    
+    def inspect(self, entrants):
+        pass
+    
+    
+    
+inspector = Inspector()
+bulletin = """Entrants require passport
+Allow citizens of Arstotzka, Obristan"""
+
+inspector.receive_bulletin(bulletin)
