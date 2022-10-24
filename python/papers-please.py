@@ -121,17 +121,21 @@ class Inspector:
         self.required_docs = {
             'citizens': [],
             'foreigners': [],
-            'both': []
+            'both': [],
+            'workers': []
         }
         self.required_vax = {
             'citizens': [],
             'foreigners': [],
-            'both': []
+            'both': [],
+            'workers': []
         }
         self.wanted_criminals = {}
         self.country_details = {
             'Arstotzka': {
-                'status': 'CITIZEN'
+                'status': 'CITIZEN',
+                'documents': [],
+                'vaccinations': []
             },
             'Antegria': {
                 
@@ -152,7 +156,32 @@ class Inspector:
                 
             }
         }
+        self.all_docs = ['passport', 'certificate of vaccination', 'ID card', 'access permit', 'work pass', 'grant of asylum', 'diplomatic authorization']
+        self.all_countries = ['arstotzka','antegria','impor','kolechia','obristan','republia','united federation']
+    
+    def update_country_allowances(self, update):
+        # method to process updates dedicated to allowing/denying citizens from specified countries
+        # need to break out countries from allow/deny
+        # split update into words then filter only country words
+        # TODO: need to check if country is already present in either list, then need to change status
+        action = update.split(' ')[0]
+        split_index = update.index('of')
+        c = update[split_index+2:].split(',')
+        countries = [x.strip() for x in c if x.strip() in self.all_countries]
+        for country in countries:
+            if action == 'allow':
+                # if country was previously in denied countries, we need to remove from that list and add to allowed list
+                if country in self.denied_countries:
+                    self.denied_countries.remove(country)
+                self.allowed_countries.append(country)
+            elif action == 'deny':
+                # if country was previously in allowed countries, we need to remove from that list and add to denied list
+                if country in self.all_countries:
+                    self.all_countries.remove(country)
+                self.denied_countries.append(country)
+        print(self.denied_countries, self.allowed_countries)
         
+    
         
     def receive_bulletin(self, bulletin):
         # TODO: process bulletin, divide into sub-strings
@@ -161,7 +190,19 @@ class Inspector:
         
         # reinitialize sorting of updates every day
         for update in updates:
-            pass
+            update = update.lower()
+            if "allow" in update or "deny" in update:
+                self.update_country_allowances(update)
+            elif "vaccination" in update:
+                # method for updating vaccinations
+                pass
+            elif "require" in update and "vaccination" not in update:
+                # method for updating required documents
+                pass
+            elif "wanted" in update:
+                # method for updating wanted criminal(s)
+                pass
+            
         
         # TODO: check for updates to list of nations whose citizens may enter
         # string should start with Allow or Deny 
@@ -180,16 +221,20 @@ class Inspector:
         
         
         # TODO: update to currently wanted criminal
+        # string should include "wanted by the state"
         pass
+    
     
     
     def inspect(self, entrants):
         pass
+        # need method to pull details from each document
     
     
     
 inspector = Inspector()
 bulletin = """Entrants require passport
-Allow citizens of Arstotzka, Obristan"""
+Allow citizens of Arstotzka, Obristan
+Deny citizens of United Federation"""
 
 inspector.receive_bulletin(bulletin)
