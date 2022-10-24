@@ -187,35 +187,44 @@ class Inspector:
         # need to identify if "require" or "do not require" - will there be bulletins that say a group NO LONGER needs a type of document? probably
         # need to identify which group
         # need to identify which documents
-        split_index = update.index('require')
-        target_group = update[:split_index]
-        document = update[split_index+7:].strip()
-        if target_group == 'entrants':
-            self.required_docs['citizens'].append(document)
-            self.required_docs['foreigners'].append(document)
-            self.required_docs['workers'].append(document)
-        elif target_group == 'citizens':
-            # if not currently required
-            if document not in self.required_docs['citizens']:
+        # * for new requirements
+        if 'do not require' not in update: 
+            split_index = update.index('require')
+            target_group = update[:split_index].strip()
+            document = update[split_index+7:].strip()
+            print(f'{target_group} now require {document}')
+            if target_group == 'entrants':
                 self.required_docs['citizens'].append(document)
-            # if previously required
-            else:
-                self.required_docs['citizens'].remove(document)
-        elif target_group == 'foreigners':
-            # any document that a foreigner needs is also required by a worker
-            if document not in self.required_docs['foreigners']:
                 self.required_docs['foreigners'].append(document)
                 self.required_docs['workers'].append(document)
-            elif document in self.required_docs['foreigners'] and document in self.required_docs['workers']:
+            elif target_group == 'citizens':
+                if document not in self.required_docs['citizens']:
+                    self.required_docs['citizens'].append(document)
+            elif target_group == 'foreigners':
+                if document not in self.required_docs['foreigners']:
+                    self.required_docs['foreigners'].append(document)
+            elif target_group == 'workers':
+                if document not in self.required_docs['workers']:
+                    self.required_docs['workers'].append(document)
+        #* removing old requirements
+        if 'do not require' in update:
+            split_index = update.index('do not require')
+            target_group = update[:split_index].strip()
+            document = update[split_index+14:].strip()
+            print(f'{target_group} do not require {document}')
+            if target_group == 'entrants':
+                self.required_docs['citizens'].remove(document)
                 self.required_docs['foreigners'].remove(document)
                 self.required_docs['workers'].remove(document)
-            elif document in self.required_docs['foreigners'] and document not in self.required_docs['workers']:
-                self.required_docs['foreigners'].remove(document)
-        elif target_group == 'workers':
-            if document not in self.required_docs['workers']:
-                self.required_docs['workers'].append(document)
-            else:
-                self.required_docs['workers'].remove(document)
+            elif target_group == 'citizens':
+                if document in self.required_docs['citizens']:
+                    self.required_docs['citizens'].remove(document)
+            elif target_group == 'foreigners':
+                if document in self.required_docs['foreigners']:
+                    self.required_docs['foreigners'].remove(document)
+            elif target_group == 'workers':
+                if document in self.required_docs['workers']:
+                    self.required_docs['workers'].remove(document)
         print(self.required_docs)
             
             
@@ -236,8 +245,7 @@ class Inspector:
                 # method for updating vaccinations
                 pass
             elif "require" in update and "vaccination" not in update:
-                # method for updating required documents
-                pass
+                self.update_required_documents(update)
             elif "wanted" in update:
                 # method for updating wanted criminal(s)
                 pass
@@ -274,6 +282,8 @@ class Inspector:
 inspector = Inspector()
 bulletin = """Entrants require passport
 Allow citizens of Arstotzka, Obristan
-Deny citizens of United Federation"""
+Deny citizens of United Federation
+Workers require work permit
+Workers do not require work permit"""
 
 inspector.receive_bulletin(bulletin)
