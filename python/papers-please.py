@@ -116,7 +116,7 @@ import re
 
 class Inspector:
     def __init__(self):
-        self.wanted_criminals = {}
+        self.wanted_criminals = []
         self.country_details = {
             'arstotzka': {
                 'status': 'native',
@@ -293,7 +293,7 @@ class Inspector:
                     for country in self.country_details.keys():
                         if self.country_details[country]['status'] == 'foreign':
                             self.country_details[country]['vaccinations'].append(vaccines)
-            print(vaccines, countries)
+            #print(vaccines, countries)
         
         #* for removing old requirements    
         elif 'no longer require' in update:
@@ -320,10 +320,15 @@ class Inspector:
                     for country in self.country_details.keys():
                         if self.country_details[country]['status'] == 'foreign':
                             self.country_details[country]['vaccinations'].remove(vaccines)
-            print(vaccines, countries)
+            #print(vaccines, countries)
         print(self.country_details)
             
-        
+    def update_wanted_criminal(self, update):
+        split_index = update.index(':')
+        criminal = update[split_index+2:].strip()
+        self.wanted_criminals.append(criminal)
+        print(self.wanted_criminals)
+      
     def receive_bulletin(self, bulletin):
         # TODO: process bulletin, divide into sub-strings
         updates = bulletin.split('\n')
@@ -340,28 +345,24 @@ class Inspector:
                 self.update_required_documents(update)
             elif "wanted" in update:
                 # method for updating wanted criminal(s)
-                pass
+                self.update_wanted_criminal(update)
             
         
         # TODO: check for updates to list of nations whose citizens may enter
-        # string should start with Allow or Deny 
-        
+        # string should start with Allow or Deny         
         # Arstotzka, Antegria, Impor, Kolechia, Obristan, Republia, and United Federation
         
         # TODO: updates to required documents
-        # string should include "require"
-        
+        # string should include "require"      
         # all entrants: passport, certificate_of_vaccination
         # arstotzka citizens only: ID card
         # only foreigners: access_permit, work_pass, grant_of_asylum, diplomatic_authorization
         
         # TODO: updates to required vaccinations
         # string should include "require" AND "vaccination"
-        
-        
+                
         # TODO: update to currently wanted criminal
         # string should include "wanted by the state"
-        pass
     
     
     
@@ -384,6 +385,7 @@ bulletin = """Citizens of Arstotzka, United Federation require ID card
 Citizens of Antegria, Republia, Obristan require polio vaccination
 Entrants require tetanus vaccination
 Foreigners no longer require tetanus vaccination
+Wanted by the State: Hubert Popovic
 """
 
 inspector.receive_bulletin(bulletin)
