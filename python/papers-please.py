@@ -134,38 +134,45 @@ class Inspector:
                 'status': 'native',
                 'allowance': True,
                 'documents': [],
-                'vaccinations': []
+                'vaccinations': [],
+                'worker_docs': []
             },
             'antegria': {
                 # country will have allowance key added
                 'status': 'foreign',
                 'documents': [],
-                'vaccinations': []
+                'vaccinations': [],
+                'worker_docs': []
             },
             'impor': {
                 'status': 'foreign',
                 'documents': [],
-                'vaccinations': []
+                'vaccinations': [],
+                'worker_docs': []
             },
             'kolechia': {
                 'status': 'foreign',
                 'documents': [],
-                'vaccinations': []
+                'vaccinations': [],
+                'worker_docs': []
             },
             'obristan': {
                 'status': 'foreign',
                 'documents': [],
-                'vaccinations': []
+                'vaccinations': [],
+                'worker_docs': []
             },
             'republia': {
                 'status': 'foreign',
                 'documents': [],
-                'vaccinations': []
+                'vaccinations': [],
+                'worker_docs': []
             },
             'united federation': {
                 'status': 'foreign',
                 'documents': [],
-                'vaccinations': []
+                'vaccinations': [],
+                'worker_docs': []
             }
         }
         #self.all_docs = ['passport', 'certificate of vaccination', 'ID card', 'access permit', 'work pass', 'grant of asylum', 'diplomatic authorization']
@@ -173,21 +180,33 @@ class Inspector:
         self.foreigner_docs = ['passport', 'certificate of vaccination', 'access permit', 'work pass', 'grant of asylum', 'diplomatic authorization']
         self.all_countries = ['arstotzka','antegria','impor','kolechia','obristan','republia','united federation']
     
+    
+    # function to break out countries from a string
+    def find_countries(self, string):
+        relevant_countries = []
+        for country in self.all_countries:
+            if country in string:
+                relevant_countries.append(country)
+        print(f'find countries function test: {relevant_countries}\n')
+        return relevant_countries
+    
+    
     def update_country_allowances(self, update):
         # method to process updates dedicated to allowing/denying citizens from specified countries
         # need to break out countries from allow/deny
         # split update into words then filter only country words
         # TODO: need to update allowance for country in dictionary
         action = update.split(' ')[0]
-        split_index = update.index('of')
-        c = update[split_index+2:].split(',')
-        countries = [x.strip() for x in c if x.strip() in self.all_countries]
+        #split_index = update.index('of')
+        #c = update[split_index+2:].split(',')
+        #countries = [x.strip() for x in c if x.strip() in self.all_countries]
+        countries = self.find_countries(update)
         for country in countries:
             if action == 'allow':
                 self.country_details[country]['allowance'] = True
             elif action == 'deny':
                 self.country_details[country]['allowance'] = False
-        print(self.country_details)
+        print(self.country_details, end="\n\n")
         
     
     def update_required_documents(self, update):
@@ -197,52 +216,65 @@ class Inspector:
         # from which country, if applicable
         # need to identify which documents
         # * for new requirements
-        if 'do not require' not in update: 
+        if 'no longer require' not in update: 
             split_index = update.index('require')
-            target_group = update[:split_index].strip()
             document = update[split_index+7:].strip()
-            print(f'{target_group} now require {document}')
-            if target_group == 'entrants':
-                # need to update dictionary status of all countries
-                for country in self.country_details.keys():
+            # if the change applies to specific countries, we need to identify those countries
+            if 'citizens of' in update:
+                countries = self.find_countries(update)
+                for country in countries:
                     self.country_details[country]['documents'].append(document)
-            # TODO: NEED TO BREAK OUT CITIZENS BY COUNTRY
-            elif target_group == 'citizens':
-                if document not in self.required_docs['citizens']:
-                    self.required_docs['citizens'].append(document)
-            elif target_group == 'foreigners':
-                for country in self.country_details.keys():
-                    if self.country_details[country]['status'] == 'foreign':
+                print(f'citizens of {countries} now require {document}\n')
+            elif 'workers of' in update:
+                countries = self.find_countries(update)
+                for country in countries:
+                    self.country_details[country]['worker_docs'].append(document)
+                print(f'workers of {countries} now require {document}\n')
+            # if the change applies to neither citizens nor workers of a specific country, we do not need to check for specific list of countries to change status of
+            else:
+                target_group = update[:split_index].strip() 
+                print(f'{target_group} now require {document}\n')
+                if target_group == 'entrants':
+                    # need to update dictionary status of all countries
+                    for country in self.country_details.keys():
                         self.country_details[country]['documents'].append(document)
-            # we will keep special track of documents needed for workers
-            # TODO: NEED TO BREAK OUT WORKERS BY COUNTRY
-            elif target_group == 'workers':
-                if document not in self.required_docs['workers']:
-                    self.required_docs['workers'].append(document)
+                elif target_group == 'foreigners':
+                    for country in self.country_details.keys():
+                        if self.country_details[country]['status'] == 'foreign':
+                            self.country_details[country]['documents'].append(document)
+
+                    
         #* removing old requirements
-        if 'do not require' in update:
-            split_index = update.index('do not require')
-            target_group = update[:split_index].strip()
-            document = update[split_index+14:].strip()
-            print(f'{target_group} do not require {document}')
-            if target_group == 'entrants':
-                # need to update dictionary document status of all countries
-                for country in self.country_details.keys():
+        if 'no longer require' in update:
+            split_index = update.index('no longer require')
+            document = update[split_index+17:].strip()
+            # if the change applies to specific countries, we need to identify those countries
+            if 'citizens of' in update:
+                countries = self.find_countries(update)
+                for country in countries:
                     self.country_details[country]['documents'].remove(document)
-            elif target_group == 'citizens':
-                if document in self.required_docs['citizens']:
-                    self.required_docs['citizens'].remove(document)
-            elif target_group == 'foreigners':
-                for country in self.country_details.keys():
-                    if self.country_details[country]['status'] == 'foreign':
-                        self.country_details[country]['documents'].append(document)
-            elif target_group == 'workers':
-                if document in self.required_docs['workers']:
-                    self.required_docs['workers'].remove(document)
-        #print(self.required_docs)
+                print(f'citizens of {countries} no longer require {document}\n')
+            elif 'workers of' in update:
+                countries = self.find_countries(update)
+                for country in countries:
+                    self.country_details[country]['worker_docs'].remove(document)
+                print(f'workers of {countries} no longer require {document}\n')
+            else:
+                target_group = update[:split_index].strip()
+                print(f'{target_group} do not require {document}')
+                if target_group == 'entrants':
+                    # need to update dictionary document status of all countries
+                    for country in self.country_details.keys():
+                        self.country_details[country]['documents'].remove(document)                
+                elif target_group == 'foreigners':
+                    for country in self.country_details.keys():
+                        if self.country_details[country]['status'] == 'foreign':
+                            self.country_details[country]['documents'].remove(document)
         print(self.country_details)
             
-            
+    
+    
+           
     def update_vaccination_reqs(self, update):
         split_index = update.index('require')
             
@@ -250,7 +282,7 @@ class Inspector:
     def receive_bulletin(self, bulletin):
         # TODO: process bulletin, divide into sub-strings
         updates = bulletin.split('\n')
-        print(updates)
+        #print(updates)
         
         # reinitialize sorting of updates every day
         for update in updates:
@@ -297,12 +329,17 @@ class Inspector:
     
     
 inspector = Inspector()
-bulletin = """Entrants require passport
-Allow citizens of Arstotzka, Obristan
-Deny citizens of United Federation
-Workers require work permit
-Workers do not require work permit
-Citizens of Arstotzka require ID card
-Foreigners require access permit"""
+# bulletin = """Entrants require passport
+# Allow citizens of Arstotzka, Obristan
+# Deny citizens of United Federation
+# Workers require work permit
+# Workers no longer require work permit
+# Citizens of Arstotzka require ID card
+# Foreigners require access permit"""
+
+bulletin = """Citizens of Arstotzka, United Federation require ID card
+Workers of Obristan require access permit
+Workers of Obristan no longer require access permit
+"""
 
 inspector.receive_bulletin(bulletin)
