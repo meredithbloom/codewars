@@ -116,18 +116,6 @@ import re
 
 class Inspector:
     def __init__(self):
-        self.allowed_countries = []
-        self.denied_countries = []
-        self.required_docs = {
-            'citizens': [],
-            'foreigners': [],
-            'workers': []
-        }
-        self.required_vax = {
-            'citizens': [],
-            'foreigners': [],
-            'workers': []
-        }
         self.wanted_criminals = {}
         self.country_details = {
             'arstotzka': {
@@ -135,47 +123,53 @@ class Inspector:
                 'allowance': True,
                 'documents': [],
                 'vaccinations': [],
-                'worker_docs': []
+                'worker_docs': [],
+                'worker_vax': []
             },
             'antegria': {
                 # country will have allowance key added
                 'status': 'foreign',
                 'documents': [],
                 'vaccinations': [],
-                'worker_docs': []
+                'worker_docs': [],
+                'worker_vax': []
             },
             'impor': {
                 'status': 'foreign',
                 'documents': [],
                 'vaccinations': [],
-                'worker_docs': []
+                'worker_docs': [],
+                'worker_vax': []
             },
             'kolechia': {
                 'status': 'foreign',
                 'documents': [],
                 'vaccinations': [],
-                'worker_docs': []
+                'worker_docs': [],
+                'worker_vax': []
             },
             'obristan': {
                 'status': 'foreign',
                 'documents': [],
                 'vaccinations': [],
-                'worker_docs': []
+                'worker_docs': [],
+                'worker_vax': []
             },
             'republia': {
                 'status': 'foreign',
                 'documents': [],
                 'vaccinations': [],
-                'worker_docs': []
+                'worker_docs': [],
+                'worker_vax': []
             },
             'united federation': {
                 'status': 'foreign',
                 'documents': [],
                 'vaccinations': [],
-                'worker_docs': []
+                'worker_docs': [],
+                'worker_vax': []
             }
         }
-        #self.all_docs = ['passport', 'certificate of vaccination', 'ID card', 'access permit', 'work pass', 'grant of asylum', 'diplomatic authorization']
         self.citizen_docs = ['passport', 'certificate of vaccination','id card']
         self.foreigner_docs = ['passport', 'certificate of vaccination', 'access permit', 'work pass', 'grant of asylum', 'diplomatic authorization']
         self.all_countries = ['arstotzka','antegria','impor','kolechia','obristan','republia','united federation']
@@ -271,19 +265,69 @@ class Inspector:
                         if self.country_details[country]['status'] == 'foreign':
                             self.country_details[country]['documents'].remove(document)
         print(self.country_details)
-            
-    
-    
+               
            
     def update_vaccination_reqs(self, update):
-        split_index = update.index('require')
+        #* for new requirements
+        if 'no longer require' not in update:
+            split_index = update.index('require')
+            vaccines = update[split_index+7:].strip()
+            countries = self.find_countries(update)
+            # we know the string has to include either citizens of or workers of if there are any specific countries mentioned
+            if len(countries) > 0:
+                if 'citizens of' in update:
+                    countries = self.find_countries(update)
+                    for country in countries:
+                        self.country_details[country]['vaccinations'].append(vaccines)
+                    print(f'citizens of {countries} now require {vaccines}\n')
+                elif 'workers of' in update:
+                    countries = self.find_countries(update)
+                    for country in countries:
+                        self.country_details[country]['worker_vax'].append(vaccines)
+                    print(f'workers of {countries} now require {vaccines}\n')
+            else:
+                if 'entrants' in update:
+                    for country in self.country_details.keys():
+                        self.country_details[country]['vaccinations'].append(vaccines)       
+                elif 'foreigners' in update:
+                    for country in self.country_details.keys():
+                        if self.country_details[country]['status'] == 'foreign':
+                            self.country_details[country]['vaccinations'].append(vaccines)
+            print(vaccines, countries)
+        
+        #* for removing old requirements    
+        elif 'no longer require' in update:
+            split_index = update.index('no longer require')
+            vaccines = update[split_index+17:].strip()
+            countries = self.find_countries(update)
+            # we know the string has to include either citizens of or workers of if there are any specific countries mentioned
+            if len(countries) > 0:
+                if 'citizens of' in update:
+                    countries = self.find_countries(update)
+                    for country in countries:
+                        self.country_details[country]['vaccinations'].remove(vaccines)
+                    print(f'citizens of {countries} no longer require {vaccines}\n')
+                elif 'workers of' in update:
+                    countries = self.find_countries(update)
+                    for country in countries:
+                        self.country_details[country]['worker_vax'].remove(vaccines)
+                    print(f'workers of {countries} no longer require {vaccines}\n')
+            else:
+                if 'entrants' in update:
+                    for country in self.country_details.keys():
+                        self.country_details[country]['vaccinations'].remove(vaccines)       
+                elif 'foreigners' in update:
+                    for country in self.country_details.keys():
+                        if self.country_details[country]['status'] == 'foreign':
+                            self.country_details[country]['vaccinations'].remove(vaccines)
+            print(vaccines, countries)
+        print(self.country_details)
             
         
     def receive_bulletin(self, bulletin):
         # TODO: process bulletin, divide into sub-strings
         updates = bulletin.split('\n')
-        #print(updates)
-        
+        #print(updates)        
         # reinitialize sorting of updates every day
         for update in updates:
             # make everything lowercase for ease of string matching
@@ -291,8 +335,7 @@ class Inspector:
             if "allow" in update or "deny" in update:
                 self.update_country_allowances(update)
             elif "vaccination" in update:
-                # method for updating vaccinations
-                pass
+                self.update_vaccination_reqs(update)
             elif "require" in update and "vaccination" not in update:
                 self.update_required_documents(update)
             elif "wanted" in update:
@@ -338,8 +381,9 @@ inspector = Inspector()
 # Foreigners require access permit"""
 
 bulletin = """Citizens of Arstotzka, United Federation require ID card
-Workers of Obristan require access permit
-Workers of Obristan no longer require access permit
+Citizens of Antegria, Republia, Obristan require polio vaccination
+Entrants require tetanus vaccination
+Foreigners no longer require tetanus vaccination
 """
 
 inspector.receive_bulletin(bulletin)
