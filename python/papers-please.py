@@ -365,24 +365,38 @@ class Inspector:
                         self.return_rejection(attribute, 'mismatch')
                     else:
                         return True
-                print(entrant_details)
+                print(documents, entrant_details)
+        self.has_all_docs(entrant_details, documents)
     
     
     #* compare specific attribute values - existing vs new. if mismatch, return false/error
     def compare_entrant_detail(self, existing_attr, new_attribute):
         # pass existing and new attribute values as strings OR date objects, if relevant
-        if existing_attr == new_attribute:
-            return True
-        else:
-            return False
+        return True if existing_attr == new_attribute else False
+
+    # country detail dict structure
     
+    # 'united federation': {
+    #             'status': 'foreign',
+    #             'documents': [],
+    #             'vaccinations': [],
+    #             'worker_docs': [],
+    #             'worker_vax': []
+    #         }
     
     #* does the applicant have the right documents needed
-    def has_all_docs(self, entrant):
+    def has_all_docs(self, entrant, entrant_documents):
         # need to check citizenship of entrant
         # need to check work status of entrant
         # need to cross reference dictionary of countries to see if entrant has all required docs based on their citizenship and work status
         nation = entrant['nation']
+        worker = True if entrant['purpose'] == 'WORK' else False
+        all_docs, all_vax = self.country_details[nation]['documents'], self.country_details[nation]['vaccinations']
+        if worker:
+            worker_docs, worker_vax = self.country_details[nation]['worker_docs'], self.country_details[nation]['worker_vax']
+        # need to check list of documents to see if it matches required list 
+        
+        
         
     
     #* is the information across the applicant's documents consistent
@@ -433,5 +447,5 @@ roman = {
 	"grant_of_asylum": 'NAME: Dolanski, Roman\nNATION: United Federation\nID#: Y3MNC-TPWQ2\nDOB: 1933.01.01\nHEIGHT: 176cm\nWEIGHT: 71kg\nEXP: 1983.09.20'
 }
 
-#inspector.receive_bulletin(bulletin)
+inspector.receive_bulletin(bulletin)
 inspector.inspect(roman)
