@@ -360,7 +360,42 @@ class Inspector:
                     entrant_details[attribute] = info
                 # if information is already present in profile, we need to cross reference
                 else:
-                    entrant_details
+                    # function to compare new information to existing information
+                    if self.compare_entrant_detail(entrant_details[attribute], info) == False:
+                        self.return_rejection(attribute, 'mismatch')
+                    else:
+                        return True
+                print(entrant_details)
+    
+    
+    #* compare specific attribute values - existing vs new. if mismatch, return false/error
+    def compare_entrant_detail(self, existing_attr, new_attribute):
+        # pass existing and new attribute values as strings OR date objects, if relevant
+        if existing_attr == new_attribute:
+            return True
+        else:
+            return False
+    
+    
+    #* does the applicant have the right documents needed
+    def has_all_docs(self, entrant):
+        # need to check citizenship of entrant
+        # need to check work status of entrant
+        # need to cross reference dictionary of countries to see if entrant has all required docs based on their citizenship and work status
+        nation = entrant['nation']
+        
+    
+    #* is the information across the applicant's documents consistent
+    def compare_documents(self, entrant):
+        pass
+    
+    #* is the document expired
+    def check_expiration(self, document):
+        pass
+    
+    def return_rejection(self, attribute, reason):
+        pass
+    
                     
     # TODO: assess if applicant meets requirements
     
