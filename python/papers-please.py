@@ -189,11 +189,7 @@ class Inspector:
         # method to process updates dedicated to allowing/denying citizens from specified countries
         # need to break out countries from allow/deny
         # split update into words then filter only country words
-        # TODO: need to update allowance for country in dictionary
         action = update.split(' ')[0]
-        #split_index = update.index('of')
-        #c = update[split_index+2:].split(',')
-        #countries = [x.strip() for x in c if x.strip() in self.all_countries]
         countries = self.find_countries(update)
         for country in countries:
             if action == 'allow':
@@ -205,9 +201,7 @@ class Inspector:
     
     def update_required_documents(self, update):
         # method to process updates dedicated to updating required documents for each group (foreigners, citizens, workers)
-        # need to identify which group
-        # TODO: need to break out citizens/workers by country
-        # from which country, if applicable
+        # need to identify which group from which country (if applicable)
         # need to identify which documents
         # * for new requirements
         if 'no longer require' not in update: 
@@ -229,7 +223,7 @@ class Inspector:
                 target_group = update[:split_index].strip() 
                 print(f'{target_group} now require {document}\n')
                 if target_group == 'entrants':
-                    # need to update dictionary status of all countries
+                    # need to update status of all countries
                     for country in self.country_details.keys():
                         self.country_details[country]['documents'].append(document)
                 elif target_group == 'foreigners':
@@ -330,9 +324,7 @@ class Inspector:
         print(self.wanted_criminals)
       
     def receive_bulletin(self, bulletin):
-        # TODO: process bulletin, divide into sub-strings
-        updates = bulletin.split('\n')
-        #print(updates)        
+        updates = bulletin.split('\n')      
         # reinitialize sorting of updates every day
         for update in updates:
             # make everything lowercase for ease of string matching
@@ -344,31 +336,37 @@ class Inspector:
             elif "require" in update and "vaccination" not in update:
                 self.update_required_documents(update)
             elif "wanted" in update:
-                # method for updating wanted criminal(s)
                 self.update_wanted_criminal(update)
-            
-        
-        # TODO: check for updates to list of nations whose citizens may enter
-        # string should start with Allow or Deny         
-        # Arstotzka, Antegria, Impor, Kolechia, Obristan, Republia, and United Federation
-        
-        # TODO: updates to required documents
-        # string should include "require"      
-        # all entrants: passport, certificate_of_vaccination
-        # arstotzka citizens only: ID card
-        # only foreigners: access_permit, work_pass, grant_of_asylum, diplomatic_authorization
-        
-        # TODO: updates to required vaccinations
-        # string should include "require" AND "vaccination"
-                
-        # TODO: update to currently wanted criminal
-        # string should include "wanted by the state"
+              
     
+    # ! INSPECT method
+    # TODO: need to take in each document and store information to be reviewed
     
+    def inspect(self, entrant):
+        # need to store all information about potential entrant across all documents
+        entrant_details = {}
+        documents = []
+        # need to move through each document that the potential entrant has
+        for doc, value in entrant.items():
+            details = value.split('\n')
+            # need to keep track of documents
+            documents.append(doc)
+            for val in details:
+                split_index = val.index(':')
+                attribute, info = val[:split_index].strip(), val[split_index+1:].strip().lower()
+                print(attribute, info)
+                #* adding new information to profile
+                if attribute not in entrant_details.keys():
+                    entrant_details[attribute] = info
+                # if information is already present in profile, we need to cross reference
+                else:
+                    entrant_details
+                    
+    # TODO: assess if applicant meets requirements
     
-    def inspect(self, entrants):
-        pass
-        # need method to pull details from each document
+    # TODO: decide if the applicant is accepted or not
+    # also needs to return string depending                
+        
     
     
     
@@ -387,5 +385,18 @@ Entrants require tetanus vaccination
 Foreigners no longer require tetanus vaccination
 Wanted by the State: Hubert Popovic
 """
+josef = {
+	"passport": 'ID#: GC07D-FU8AR\nNATION: Arstotzka\nNAME: Costanza, Josef\nDOB: 1933.11.28\nSEX: M\nISS: East Grestin\nEXP: 1983.03.15'
+}
 
-inspector.receive_bulletin(bulletin)
+guyovich = {
+	"access_permit": 'NAME: Guyovich, Russian\nNATION: Obristan\nID#: TE8M1-V3N7R\nPURPOSE: TRANSIT\nDURATION: 14 DAYS\nHEIGHT: 159cm\nWEIGHT: 60kg\nEXP: 1983.07.13'
+}
+
+roman = {
+	"passport": 'ID#: WK9XA-LKM0Q\nNATION: United Federation\nNAME: Dolanski, Roman\nDOB: 1933.01.01\nSEX: M\nISS: Shingleton\nEXP: 1983.05.12',
+	"grant_of_asylum": 'NAME: Dolanski, Roman\nNATION: United Federation\nID#: Y3MNC-TPWQ2\nDOB: 1933.01.01\nHEIGHT: 176cm\nWEIGHT: 71kg\nEXP: 1983.09.20'
+}
+
+#inspector.receive_bulletin(bulletin)
+inspector.inspect(roman)
