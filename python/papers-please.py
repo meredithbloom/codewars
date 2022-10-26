@@ -364,8 +364,9 @@ class Inspector:
                     if self.compare_entrant_detail(entrant_details[attribute], info) == False:
                         self.return_rejection(attribute, 'mismatch')
                     else:
-                        return True
-                print(documents, entrant_details)
+                        pass
+            print(documents, entrant_details)
+        print(f'going to check if applicant has all required docs')
         self.has_all_docs(entrant_details, documents)
     
     
@@ -384,20 +385,25 @@ class Inspector:
     #             'worker_vax': []
     #         }
     
+    # TODO: assess if applicant meets requirements
+    
     #* does the applicant have the right documents needed
     def has_all_docs(self, entrant, entrant_documents):
+        print(f'testing if applicant has required documents')
+        print(entrant_documents)
         # need to check citizenship of entrant
         # need to check work status of entrant
         # need to cross reference dictionary of countries to see if entrant has all required docs based on their citizenship and work status
-        nation = entrant['nation']
-        worker = True if entrant['purpose'] == 'WORK' else False
+        print(entrant)
+        nation = entrant['NATION']
+        if 'PURPOSE' in entrant.keys():
+            worker = True if entrant['PURPOSE'] == 'WORK' else False
+            if worker:
+                worker_docs, worker_vax = self.country_details[nation]['worker_docs'], self.country_details[nation]['worker_vax']
         all_docs, all_vax = self.country_details[nation]['documents'], self.country_details[nation]['vaccinations']
-        if worker:
-            worker_docs, worker_vax = self.country_details[nation]['worker_docs'], self.country_details[nation]['worker_vax']
+        
         # need to check list of documents to see if it matches required list 
-        
-        
-        
+        print(entrant_documents)
     
     #* is the information across the applicant's documents consistent
     def compare_documents(self, entrant):
@@ -411,11 +417,12 @@ class Inspector:
         pass
     
                     
-    # TODO: assess if applicant meets requirements
+   
     
     # TODO: decide if the applicant is accepted or not
-    # also needs to return string depending                
-        
+    # also needs to return string depending on whether applicant is native citizen                
+    def final_decision(self, entrant):
+        pass     
     
     
     
@@ -447,5 +454,5 @@ roman = {
 	"grant_of_asylum": 'NAME: Dolanski, Roman\nNATION: United Federation\nID#: Y3MNC-TPWQ2\nDOB: 1933.01.01\nHEIGHT: 176cm\nWEIGHT: 71kg\nEXP: 1983.09.20'
 }
 
-inspector.receive_bulletin(bulletin)
+#inspector.receive_bulletin(bulletin)
 inspector.inspect(roman)
