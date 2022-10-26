@@ -196,7 +196,7 @@ class Inspector:
                 self.country_details[country]['allowance'] = True
             elif action == 'deny':
                 self.country_details[country]['allowance'] = False
-        print(self.country_details, end="\n\n")
+        #print(self.country_details, end="\n\n")
         
     
     def update_required_documents(self, update):
@@ -212,7 +212,7 @@ class Inspector:
                 countries = self.find_countries(update)
                 for country in countries:
                     self.country_details[country]['documents'].append(document)
-                print(f'citizens of {countries} now require {document}\n')
+                #print(f'citizens of {countries} now require {document}\n')
             elif 'workers of' in update:
                 countries = self.find_countries(update)
                 for country in countries:
@@ -221,7 +221,7 @@ class Inspector:
             # if the change applies to neither citizens nor workers of a specific country, we do not need to check for specific list of countries to change status of
             else:
                 target_group = update[:split_index].strip() 
-                print(f'{target_group} now require {document}\n')
+                #print(f'{target_group} now require {document}\n')
                 if target_group == 'entrants':
                     # need to update status of all countries
                     for country in self.country_details.keys():
@@ -258,7 +258,7 @@ class Inspector:
                     for country in self.country_details.keys():
                         if self.country_details[country]['status'] == 'foreign':
                             self.country_details[country]['documents'].remove(document)
-        print(self.country_details)
+        #print(self.country_details)
                
            
     def update_vaccination_reqs(self, update):
@@ -273,12 +273,12 @@ class Inspector:
                     countries = self.find_countries(update)
                     for country in countries:
                         self.country_details[country]['vaccinations'].append(vaccines)
-                    print(f'citizens of {countries} now require {vaccines}\n')
+                    #print(f'citizens of {countries} now require {vaccines}\n')
                 elif 'workers of' in update:
                     countries = self.find_countries(update)
                     for country in countries:
                         self.country_details[country]['worker_vax'].append(vaccines)
-                    print(f'workers of {countries} now require {vaccines}\n')
+                    #print(f'workers of {countries} now require {vaccines}\n')
             else:
                 if 'entrants' in update:
                     for country in self.country_details.keys():
@@ -300,12 +300,12 @@ class Inspector:
                     countries = self.find_countries(update)
                     for country in countries:
                         self.country_details[country]['vaccinations'].remove(vaccines)
-                    print(f'citizens of {countries} no longer require {vaccines}\n')
+                    #print(f'citizens of {countries} no longer require {vaccines}\n')
                 elif 'workers of' in update:
                     countries = self.find_countries(update)
                     for country in countries:
                         self.country_details[country]['worker_vax'].remove(vaccines)
-                    print(f'workers of {countries} no longer require {vaccines}\n')
+                    #print(f'workers of {countries} no longer require {vaccines}\n')
             else:
                 if 'entrants' in update:
                     for country in self.country_details.keys():
@@ -315,13 +315,13 @@ class Inspector:
                         if self.country_details[country]['status'] == 'foreign':
                             self.country_details[country]['vaccinations'].remove(vaccines)
             #print(vaccines, countries)
-        print(self.country_details)
+        #print(self.country_details)
             
     def update_wanted_criminal(self, update):
         split_index = update.index(':')
         criminal = update[split_index+2:].strip()
         self.wanted_criminals.append(criminal)
-        print(self.wanted_criminals)
+        #print(self.wanted_criminals)
       
     def receive_bulletin(self, bulletin):
         updates = bulletin.split('\n')      
@@ -337,6 +337,7 @@ class Inspector:
                 self.update_required_documents(update)
             elif "wanted" in update:
                 self.update_wanted_criminal(update)
+        print(self.country_details)
               
     
     # ! INSPECT method
@@ -354,7 +355,7 @@ class Inspector:
             for val in details:
                 split_index = val.index(':')
                 attribute, info = val[:split_index].strip(), val[split_index+1:].strip().lower()
-                print(attribute, info)
+                #print(attribute, info)
                 #* adding new information to profile
                 if attribute not in entrant_details.keys():
                     entrant_details[attribute] = info
@@ -366,7 +367,7 @@ class Inspector:
                     else:
                         pass
             print(documents, entrant_details)
-        print(f'going to check if applicant has all required docs')
+        #print(f'going to check if applicant has all required docs')
         self.has_all_docs(entrant_details, documents)
     
     
@@ -454,5 +455,6 @@ roman = {
 	"grant_of_asylum": 'NAME: Dolanski, Roman\nNATION: United Federation\nID#: Y3MNC-TPWQ2\nDOB: 1933.01.01\nHEIGHT: 176cm\nWEIGHT: 71kg\nEXP: 1983.09.20'
 }
 
-#inspector.receive_bulletin(bulletin)
+inspector.receive_bulletin(bulletin)
+print("\n\n")
 inspector.inspect(roman)
