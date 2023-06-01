@@ -32,6 +32,7 @@ class Vector:
         string = string[:-1]+')'
         return string
 
+    # return a new vector with values from adding one vector to another
     def add(self, other_vector):
         if self.length != len(other_vector):
             raise ValueError('vectors are not of equal length')
@@ -42,20 +43,23 @@ class Vector:
                 new_vector.append(new)
             return self.__init__(new_vector)
 
+    # return a new vector with values from subtracting one vector from another
     def subtract(self, other_vector):
         if self.length != len(other_vector):
             raise ValueError('vectors are not of equal length')
         else:
             continue
 
+    # find the sum of the products of two vectors
     def dot(self, other_vector):
         if self.length != len(other_vector):
             raise ValueError('vectors are not of equal length')
         else:
             continue
 
+    # return the sqrt of the sums of the squares of all values in the vector
     def norm(self):
         total = 0
         for x in range(0, self.length-1):
             total += self.vals[0]**2
-        return total
+        return total**0.5
