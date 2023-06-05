@@ -34,28 +34,34 @@ class Vector:
 
     # return a new vector with values from adding one vector to another
     def add(self, other_vector):
-        if self.length != len(other_vector):
+        if self.length != other_vector.length:
             raise ValueError('vectors are not of equal length')
         else:
             new_vector = []
             for i in range(0, self.length-1):
-                new = self.vals[i] + other_vector[i]
+                new = self.vals[i] + other_vector.vals[i]
                 new_vector.append(new)
             return self.__init__(new_vector)
 
     # return a new vector with values from subtracting one vector from another
     def subtract(self, other_vector):
-        if self.length != len(other_vector):
+        if self.length != other_vector.length:
             raise ValueError('vectors are not of equal length')
         else:
-            continue
+            new_vector = []
+            for (x,y) in (self.vals, other_vector.vals):
+                new_vector.append(x-y)
+            return self.__init__(new_vector)
 
     # find the sum of the products of two vectors
     def dot(self, other_vector):
-        if self.length != len(other_vector):
+        if self.length != other_vector.length:
             raise ValueError('vectors are not of equal length')
         else:
-            continue
+            product = 0
+            for (x,y) in (self.vals, other_vector.vals):
+                product+=(x*y)
+            return product
 
     # return the sqrt of the sums of the squares of all values in the vector
     def norm(self):
@@ -63,3 +69,13 @@ class Vector:
         for x in range(0, self.length-1):
             total += self.vals[0]**2
         return total**0.5
+    
+    
+    def equals(self, other_vector):
+        if self.length != other_vector.length:
+            raise ValueError('vectors are not of equal length')
+        else:
+            for (x,y) in (self.vals, other_vector.vals):
+                if (x-y) != 0:
+                    return False
+            return True
