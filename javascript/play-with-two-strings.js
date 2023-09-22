@@ -25,6 +25,7 @@ char 'b' occurs 3 times in string b. So string a swaps as follow: start with "Ab
 c) merge new strings a and b
 return "ABABbababa"
 */
+var _ = require('lodash');
 
 function swapCase(letter) {
     //console.log(letter)
@@ -40,10 +41,10 @@ function swapCase(letter) {
 function counter(string) {
     let counter = {}
     for (let letter of string) {
-        if (counter[letter]) {
-            counter[letter] += 1
+        if (counter[letter.toLowerCase()]) {
+            counter[letter.toLowerCase()] += 1
         } else {
-            counter[letter] = 1
+            counter[letter.toLowerCase()] = 1
         }
     }
     return counter
@@ -53,23 +54,39 @@ function workOnStrings(a,b){
     let bCopy = "";
     let aCopy = "";
     let aLetters = counter(a);
-    console.log(aLetters)
+    //console.log(aLetters)
     let bLetters = counter(b);
-    for (let i=0; i < b.length; i++) {
-        let cur = b[i]
-        // if the letter is present in a AND we still have at least one match
-        if (aLetters[cur] > 0) {
-            bCopy += swapCase(cur)
-            //console.log(aLetters)
-            aLetters[cur] = aLetters[cur]- 1;
-            //console.log(aLetters)
-        } else {
-            bCopy += cur
+    //console.log(bLetters)
+    // filter both dictionaries so only keys present in both counters will remain
+    let sharedValues = _.intersection(Object.keys(aLetters), Object.keys(bLetters))
+    console.log(sharedValues)
+    for (let key of Object.keys(aLetters)) {
+        if (!sharedValues.includes(key)) {
+            delete aLetters[key]
         }
-        console.log(bCopy)
-        console.log(aLetters)
+    }
+    for (let key of Object.keys(bLetters)) {
+        if (!sharedValues.includes(key)) {
+            delete bLetters[key]
+        }
+    }
+    console.log(aLetters)
+    console.log(bLetters)
+    // deal with string b - 
+    console.log(b)
+    for (let letter of Object.keys(aLetters)) {
+        let numSwitches = aLetters[letter]
+        let uppercaseLetter = letter.toUpperCase()
+        //console.log(letter, uppercaseLetter)
+        if (numSwitches%2 !== 0) {
+            bCopy = b.replaceAll(letter, swapCase(letter))
+            console.log(bCopy)
+            bCopy = b.replaceAll(uppercaseLetter, swapCase(uppercaseLetter))
+            console.log(bCopy)
+        }
     }
     console.log(bCopy)
+    // deal with string a 
 }
 
 //workOnStrings("abc","cde");
