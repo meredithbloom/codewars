@@ -28,12 +28,9 @@ return "ABABbababa"
 var _ = require('lodash');
 
 function swapCase(letter) {
-    //console.log(letter)
     if (letter === letter.toUpperCase()) {
-        //console.log(letter, letter.toLowerCase())
         return letter.toLowerCase()
     } else {
-        //console.log(letter, letter.toUpperCase())
         return letter.toUpperCase()
     }
 }
@@ -54,12 +51,9 @@ function workOnStrings(a,b){
     let bCopy = "";
     let aCopy = "";
     let aLetters = counter(a);
-    //console.log(aLetters)
     let bLetters = counter(b);
-    //console.log(bLetters)
     // filter both dictionaries so only keys present in both counters will remain
     let sharedValues = _.intersection(Object.keys(aLetters), Object.keys(bLetters))
-    console.log(sharedValues)
     for (let key of Object.keys(aLetters)) {
         if (!sharedValues.includes(key)) {
             delete aLetters[key]
@@ -70,26 +64,43 @@ function workOnStrings(a,b){
             delete bLetters[key]
         }
     }
-    console.log(aLetters)
-    console.log(bLetters)
-    // deal with string b - 
-    console.log(b)
-    for (let letter of Object.keys(aLetters)) {
-        let numSwitches = aLetters[letter]
-        let uppercaseLetter = letter.toUpperCase()
-        //console.log(letter, uppercaseLetter)
-        if (numSwitches%2 !== 0) {
-            bCopy = b.replaceAll(letter, swapCase(letter))
-            console.log(bCopy)
-            bCopy = b.replaceAll(uppercaseLetter, swapCase(uppercaseLetter))
-            console.log(bCopy)
+    // deal with string b
+    //console.log(b, aLetters)
+    for (let cur of b) {
+        if (Object.keys(aLetters).includes(cur.toLowerCase())) {
+            let numSwitches = aLetters[cur.toLowerCase()]
+            let uppercaseLetter = cur.toUpperCase()
+            if (numSwitches%2 !== 0) {
+                bCopy = bCopy + swapCase(cur)
+            } else {
+                bCopy = bCopy + cur
+            }
+        } else {
+            bCopy = bCopy + cur
         }
     }
-    console.log(bCopy)
+    //console.log(bCopy)
     // deal with string a 
+    //console.log(a, bLetters)
+    for (let cur of a) {
+        if (Object.keys(bLetters).includes(cur.toLowerCase())) {
+            let numSwitches = bLetters[cur.toLowerCase()]
+            let uppercaseLetter = cur.toUpperCase()
+            if (numSwitches%2 !== 0) {
+                aCopy = aCopy + swapCase(cur)
+            } else {
+                aCopy = aCopy + cur
+            }
+        } else {
+            aCopy = aCopy + cur
+        }
+    }
+    //console.log(aCopy)
+    //console.log(aCopy+bCopy)
+    return(aCopy+bCopy)
 }
 
 //workOnStrings("abc","cde");
-//workOnStrings("abcdeFgtrzw", "defgGgfhjkwqe");
-workOnStrings("abcdeFg", "defgG");
+workOnStrings("abcdeFgtrzw", "defgGgfhjkwqe"); // abcDeFGtrzWDEFGgGFhjkWqE
+//workOnStrings("abcdeFg", "defgG");
 //workOnStrings("abab", "bababa");
