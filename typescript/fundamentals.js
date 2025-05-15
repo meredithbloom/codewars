@@ -1,7 +1,7 @@
 "use strict";
 // 8 KYU
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Kata = exports.boolToWord = void 0;
+exports.Challenge = exports.Kata = exports.boolToWord = void 0;
 exports.lovefunc = lovefunc;
 exports.number = number;
 // Convert boolean values to strings 'yes' or 'no' 
@@ -48,14 +48,38 @@ class Kata {
         const vowels = ['a', 'e', 'i', 'o', 'u'];
         let count = 0;
         for (let char of str.split('')) {
-            console.log(char);
             if (vowels.includes(char)) {
                 count++;
             }
         }
-        console.log(count);
         return count;
     }
 }
 exports.Kata = Kata;
 Kata.getCount("abracadabra");
+// 6 KYU
+// Multiples of 3 or 5
+// finish the solution so that it returns the sum of all the multiples of 3 or 5 BELOW the number passed in
+// if the number is negative, return 0
+// if a number if a multiple of BOTH 3 and 5, only count it once
+class Challenge {
+    static solution(number) {
+        let sum = 0;
+        if (number < 4) {
+            return sum;
+        }
+        for (let i = 3; i < number; i++) {
+            if (this.checkIfMultiple(i)) {
+                sum += i;
+            }
+        }
+        return sum;
+    }
+    static checkIfMultiple(number) {
+        if (number % 5 === 0 || number % 3 === 0) {
+            return true;
+        }
+        return false;
+    }
+}
+exports.Challenge = Challenge;
