@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using System.Collections.Generic;
 
 public static class Kata
 {
@@ -31,6 +32,7 @@ public static class Kata
     return sb.ToString();
   }
 
+  // 6 KYU - Detect Pangram
   public static bool IsPangram(string str)
   {
     string alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -43,7 +45,77 @@ public static class Kata
     }
     if (sb.ToString().Length == 0) { return true; }
     else { return false; }
-  }  
+  }
+
+  // 6 KYU - Who likes it?
+  /*
+  []                                -->  "no one likes this"
+  ["Peter"]                         -->  "Peter likes this"
+  ["Jacob", "Alex"]                 -->  "Jacob and Alex like this"
+  ["Max", "John", "Mark"]           -->  "Max, John and Mark like this"
+  ["Alex", "Jacob", "Mark", "Max"]  -->  "Alex, Jacob and 2 others like this"
+  */
+  public static string Likes(string[] name)
+  {
+    string nameStr;
+    int nameCount = name.Length;
+    switch (nameCount)
+    {
+      case 1:
+        nameStr = $"{name[0]} likes this";
+        break;
+      case 2:
+        nameStr = $"{name[0]} and {name[1]} like this";
+        break;
+      case 3:
+        nameStr = $"{name[0]}, {name[1]} and {name[2]} like this";
+        break;
+      case >= 4:
+        nameStr = $"{name[0]}, {name[1]} and {nameCount-2} others like this";
+        break;
+      default:
+        nameStr = "no one likes this";
+        break;
+    }
+    return nameStr; 
+  }
+
+  // 6 KYU - Duplicate Encoder
+  /*
+  The goal of this exercise is to convert a string to a new string where each character in the new string is "(" if that character appears only once in the original string, or ")" if that character appears more than once in the original string. Ignore capitalization when determining if a character is a duplicate.
+
+  "din"      =>  "((("
+  "recede"   =>  "()()()"
+  "Success"  =>  ")())())"
+  "(( @"     =>  "))((" 
+  */
+  public static string DuplicateEncode(string word)
+  {
+    word = word.ToLower();
+    List<string> charList = new List<string>();
+    foreach (char character in word) {
+      if (word.Count(l => l == character) == 1) {
+        charList.Add("(");
+      } else {
+        charList.Add(")");
+      }
+    }
+    return string.Concat(charList);
+  }
+
+  // 5 KYU - First non-repeating character
+  // If a string has no unique characters, it should return an empty string
+  public static string FirstNonRepeatingLetter(string s)
+  {
+    string copy = s.ToLower();
+    foreach (char letter in s) {
+      char lowerCase = char.ToLower(letter);
+      if (copy.Count(x => x == lowerCase) == 1) {
+        return letter.ToString();
+      }
+    }
+    return "";
+  }
 }
 
 
